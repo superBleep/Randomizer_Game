@@ -1,7 +1,3 @@
-///TODO: implement game
-///TODO: check if name, type inputs are correct
-///TODO: write README
-
 #include <iostream>
 #include <fstream>
 #include <time.h>

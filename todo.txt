@@ -1,0 +1,11 @@
+///TODO: implement game
+    //game options: attack, parry, heal
+    //attack: stamina => consecutive turns to attack before waiting
+    //parry: parry stat, adds buff to defence
+    //heal: heal with function (add a potion class later?)
+///TODO: v0.1
+    //fight one enemy
+    //win on killing said enemy
+    //lose on dying
+///TODO: check if name, type inputs are correct
+///TODO: write README
