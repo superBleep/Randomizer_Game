@@ -47,7 +47,7 @@ class Player {
         //operator<<
         friend std::ostream &operator<<(std::ostream &os, Player &p);
 
-        //operator>>
+        //operator>> and initializer list
         friend std::istream &operator>>(std::istream &is, Player &p);
 
         //attack function
@@ -113,9 +113,42 @@ std::ostream &operator<<(std::ostream &os, Player &p){
     return os;
 }
 
-//operator>>
+//operator>> and initializer list
 std::istream &operator>>(std::istream &is, Player &p){
-    is >>p.name >>p.type;
+    std::cout <<"##### Randomizer Game: C++ OOP Text-based RPG #####" <<std::endl;
+    std::cout <<"Choose a NAME for your hero:" <<std::endl;
+    std::cout <<"> ";
+
+    is >>p.name;
+
+    std::cout <<"Choose a TYPE for your hero:" <<std::endl;
+    std::cout <<"Type_1 -> Base Stats: HP = 100 Stamina = 20 Defence = 63" <<std::endl;
+    std::cout <<"Type_2 -> Base Stats: HP = 200 Stamina = 40 Defence = 27" <<std::endl;
+    std::cout <<"> ";
+
+    is >>p.type;
+
+    if(p.type == "Type_1"){
+        p.HP = new int; 
+        *p.HP = 100;
+
+        p.Stamina = new int;
+        *p.Stamina = 20;
+
+        p.Defence = new int;
+        *p.Defence = 63;
+    }
+    if(p.type == "Type_2"){
+        p.HP = new int; 
+        *p.HP = 200;
+
+        p.Stamina = new int;
+        *p.Stamina = 40;
+
+        p.Defence = new int;
+        *p.Defence = 27;
+    }
+
     return is;
 }
 

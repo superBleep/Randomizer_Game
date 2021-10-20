@@ -1,20 +1,11 @@
 ///TODO: implement game
-///TODO: fix segfault on using operator>>
 ///TODO: check if name, type inputs are correct
+///TODO: write README
 
 #include <iostream>
 #include <fstream>
-#include <string>
 #include <time.h>
 #include "Player.h"
-
-void intro(){
-    std::cout <<"##### C++ OOP Text-based RPG #####" <<std::endl;
-    std::cout <<"Choose a NAME and a TYPE for your hero:" <<std::endl;
-    std::cout <<"Type_1 -> Base Stats: HP = 100 Stamina = 20 Defence = 63" <<std::endl;
-    std::cout <<"Type_2 -> Base Stats: HP = 200 Stamina = 40 Defence = 27" <<std::endl;
-    std::cout <<"> ";
-}
 
 int game(Player &hero){
     int opt;
@@ -47,14 +38,14 @@ int main(){
     //time seed for random number generator
     srand(time(NULL));
 
-    intro();
-    Player hero("Hero", "Type_1"), enemy("Bingo", "Type_2");
+    //------testing
+    Player hero, enemy("Bingo", "Type_2");
+    std::cin >>hero;
 
     std::cout <<hero <<std::endl <<enemy <<std::endl;
-
     hero.attackEnemy(enemy);
-
     std::cout <<enemy;
+    //------testing
 
     return 0;
 }
