@@ -3,36 +3,33 @@
 
 class Weapon
 {
-        int *dmg;
+        int dmg;
     public:
         //constructor and initializer list
         Weapon(){
-            dmg = new int;
-            *dmg = (rand() % (MAX_WEP_DMG + 1 - MIN_WEP_DMG)) + MIN_WEP_DMG;
+            dmg = (rand() % (MAX_WEP_DMG + 1 - MIN_WEP_DMG)) + MIN_WEP_DMG;
         }
 
         //copy constructor
         Weapon(const Weapon &w){
-            *dmg = *w.dmg;
+            dmg = w.dmg;
         }
 
         //asingment operator
         Weapon &operator=(const Weapon &w){
-            *dmg = *w.dmg;
+            this->dmg = w.dmg;
             return *this;
         }
 
         //destructor
-        ~Weapon() {
-            delete dmg;
-        }
+        ~Weapon() {}
 
         int getDmg(){
-            return *dmg;
+            return dmg;
         }
 
         //operator<<
         friend std::ostream &operator<<(std::ostream &os, Weapon& w){
-            os <<"Weapon damage: " <<*w.dmg;
+            os <<"Weapon damage: " <<w.dmg;
         }
 };
