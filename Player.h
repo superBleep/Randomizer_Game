@@ -1,6 +1,3 @@
-#define HEAD_CHANCE 15
-#define BODY_CHANCE 75
-
 #include "Weapon.h"
 #include "Armor.h"
 
@@ -12,11 +9,14 @@ class Player {
         int HP;
         int Stamina;
         int Defence;
+
+        const int HEAD_CHANCE = 15;
+        const int BODY_CHANCE = 75;
     public:
         //default constructor
         Player() {}
 
-        //constructor and initializer list
+        //constructor
         Player(std::string name, std::string type);
 
         //copy constructor
@@ -49,7 +49,7 @@ class Player {
         void attackEnemy(Player &enemy);
 };
 
-//constructor and initializer list
+//constructor
 Player::Player(std::string name, std::string type) {
     this->name = name;
     this->type = type;
@@ -85,7 +85,7 @@ std::ostream &operator<<(std::ostream &os, Player &p){
     <<p.weapon <<std::endl
     <<std::endl <<"Armor:" <<std::endl
     <<p.armor;
-    
+
     return os;
 }
 
@@ -117,6 +117,13 @@ std::istream &operator>>(std::istream &is, Player &p){
 
     return is;
 }
+
+//attack head function
+
+//attack body function
+
+//attack legs function
+
 
 //attack function
 void Player::attackEnemy(Player &enemy){

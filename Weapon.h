@@ -1,9 +1,9 @@
-#define MIN_WEP_DMG 10
-#define MAX_WEP_DMG 50
-
 class Weapon
 {
         int dmg;
+
+        const int MIN_WEP_DMG = 10;
+        const int MAX_WEP_DMG = 50;
     public:
         //constructor and initializer list
         Weapon(){

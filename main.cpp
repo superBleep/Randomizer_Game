@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <ctime>
+#include <cstdlib>
 #include "Player.h"
 
 int game(Player &hero){
