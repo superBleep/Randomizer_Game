@@ -39,6 +39,15 @@ class Player {
         //destructor
         ~Player() {}
 
+        //getters
+        std::string getName(){
+            return this->name;
+        }
+
+        int getHP(){
+            return this->HP;
+        }
+
         //operator<<
         friend std::ostream &operator<<(std::ostream &os, Player &p);
 
@@ -47,6 +56,15 @@ class Player {
 
         //attack function
         void attackEnemy(Player &enemy);
+    private:
+        //attack head function
+        void attackEnemyHead(Player &enemy, int high, int formula, std::ostream &fout);
+
+        //attack body function
+        void attackEnemyBody(Player &enemy, int high, int formula, std::ostream &fout);
+
+        //attack legs function
+        void attackEnemyLegs(Player &enemy, int high, int formula, std::ostream &fout);
 };
 
 //constructor
@@ -119,11 +137,112 @@ std::istream &operator>>(std::istream &is, Player &p){
 }
 
 //attack head function
+void Player::attackEnemyHead(Player &enemy, int high, int formula, std::ostream &fout){
+    //armor isn't broken
+    if(enemy.armor.getHead() > 0){
+        //logs - Head Armor
+        fout <<"Enemy hit in Head Armor for: " <<high % 100 <<"% out of "
+        <<weapon.getDmg() <<" = " <<formula - 1 <<" (+ 1)" <<std::endl
+        <<"Head Armor before: " <<enemy.armor.getHead() <<std::endl
+        <<"Head Armor after: " <<enemy.armor.getHead() - formula <<std::endl;
+
+        std::cout <<"(" <<formula <<" absorbed by " <<enemy.getName() <<"'s Head Armor)" <<std::endl;
+
+        //damage calculation
+        if(formula >= enemy.armor.getHead())
+            enemy.armor.setHead(0);
+        else
+            enemy.armor.setHead(enemy.armor.getHead() - formula);
+    }
+    //armor is broken
+    else{
+        //logs - Broken Head Armor
+        fout <<"Armor broken: enemy hit in HP for: " <<high % 100 <<"% out of "
+        <<weapon.getDmg() <<" = " <<formula - 1 <<" (+ 1)" <<std::endl
+        <<"HP before: " <<enemy.HP <<std::endl;
+
+        std::cout <<"Head Armor broken! Additional "
+        <<formula <<" damage to " <<enemy.getName() <<"'s HP." <<std::endl;
+
+        //damage calculation
+        enemy.HP -= formula - 1;
+
+        //logs - Broken Head Armor
+        fout <<"HP after: " <<enemy.HP <<std::endl;
+    }
+}
 
 //attack body function
+void Player::attackEnemyBody(Player &enemy, int high, int formula, std::ostream &fout){
+    //armor isn't broken
+    if(enemy.armor.getBody() > 0){
+        //logs - Body Armor
+        fout <<"Enemy hit in Body Armor for: " <<high % 100 <<"% out of "
+        <<weapon.getDmg() <<" = " <<formula - 1 <<" (+ 1)" <<std::endl
+        <<"Body Armor before: " <<enemy.armor.getBody() <<std::endl
+        <<"Body Armor after: " <<enemy.armor.getBody() - formula <<std::endl;
+
+        std::cout <<"(" <<formula <<" absorbed by " <<enemy.getName() <<"'s Body Armor)" <<std::endl;
+
+        //damage calculation
+        if(formula >= enemy.armor.getBody())
+            enemy.armor.setBody(0);
+        else
+            enemy.armor.setBody(enemy.armor.getBody() - formula);
+    }
+    //armor is broken
+    else{
+        //logs - Broken Body Armor
+        fout <<"Armor broken: enemy hit in HP for: " <<high % 100 <<"% out of "
+        <<weapon.getDmg() <<" = " <<formula - 1 <<" (+ 1)" <<std::endl
+        <<"HP before: " <<enemy.HP <<std::endl;
+
+        std::cout <<"Body Armor broken! Additional "
+        <<formula <<" damage to " <<enemy.getName() <<"'s HP." <<std::endl;
+
+        //damage calculation
+        enemy.HP -= formula - 1;
+
+        //logs - Broken Body Armor
+        fout <<"HP after: " <<enemy.HP <<std::endl;
+    }
+}
 
 //attack legs function
+void Player::attackEnemyLegs(Player &enemy, int high, int formula, std::ostream &fout){
+    //armor isn't broken
+    if(enemy.armor.getLegs() > 0){
+        //logs - Legs Armor
+        fout <<"Enemy hit in Legs Armor for: " <<high % 100 <<"% out of "
+        <<weapon.getDmg() <<" = " <<formula - 1 <<" (+ 1)" <<std::endl
+        <<"Legs Armor before: " <<enemy.armor.getLegs() <<std::endl
+        <<"Legs Armor after: " <<enemy.armor.getLegs() - formula <<std::endl;
 
+        std::cout <<"(" <<formula <<" absorbed by " <<enemy.getName() <<"'s Legs Armor)";
+
+        //damage calculation
+        if(formula >= enemy.armor.getLegs())
+            enemy.armor.setLegs(0);
+        else
+            enemy.armor.setLegs(enemy.armor.getLegs() - formula);
+    }
+    //armor is broken
+    else{
+        //logs - Broken Legs Armor
+        fout <<"Legs Armor broken: enemy hit in HP for: " <<high % 100 <<"% out of "
+        <<weapon.getDmg() <<" = " <<formula - 1 <<" (+ 1)" <<std::endl
+        <<"HP before: " <<enemy.HP <<std::endl;
+
+        std::cout <<"Armor broken! Additional "
+        <<formula <<" damage to " <<enemy.getName() <<"'s HP." <<std::endl;
+
+        //damage calculation
+        enemy.HP -= formula - 1;
+
+        //logs - Broken Legs Armor
+        fout <<"HP after: " <<enemy.HP <<std::endl;
+    }
+}
 
 //attack function
 void Player::attackEnemy(Player &enemy){
@@ -160,6 +279,9 @@ void Player::attackEnemy(Player &enemy){
     <<weapon.getDmg() <<" = " <<low % 100 * weapon.getDmg() / 100 <<std::endl
     <<"HP before: " <<enemy.HP <<std::endl;
 
+    std::cout <<low % 100 * weapon.getDmg() / 100 <<" dmg dealt to " <<enemy.getName()
+    <<"'s HP!" <<std::endl;
+
     //damage calculation
     enemy.HP -= low % 100 * weapon.getDmg() / 100;
 
@@ -170,93 +292,12 @@ void Player::attackEnemy(Player &enemy){
     int formula = high % 100 * weapon.getDmg() / 100 + 1;
 
     //+1 to every scenario to fix division loss
-    if(chance <= HEAD_CHANCE){
-        //armor isn't broken
-        if(enemy.armor.getHead() > 0){
-            //logs - Head Armor
-            fout <<"Enemy hit in Head Armor for: " <<high % 100 <<"% out of "
-            <<weapon.getDmg() <<" = " <<formula - 1 <<" (+ 1)" <<std::endl
-            <<"Head Armor before: " <<enemy.armor.getHead() <<std::endl
-            <<"Head Armor after: " <<enemy.armor.getHead() - formula <<std::endl;
-
-            //damage calculation
-            if(formula >= enemy.armor.getHead())
-                enemy.armor.setHead(0);
-            else
-                enemy.armor.setHead(enemy.armor.getHead() - formula);
-        }
-        //armor is broken
-        else{
-            //logs - Broken Head Armor
-            fout <<"Armor broken: enemy hit in HP for: " <<high % 100 <<"% out of "
-            <<weapon.getDmg() <<" = " <<formula - 1 <<" (+ 1)" <<std::endl
-            <<"HP before: " <<enemy.HP <<std::endl;
-
-            //damage calculation
-            enemy.HP -= formula - 1;
-
-            //logs - Broken Head Armor
-            fout <<"HP after: " <<enemy.HP <<std::endl;
-        }
-    }
-    else if(chance <= BODY_CHANCE){
-        //armor isn't broken
-        if(enemy.armor.getBody() > 0){
-            //logs - Body Armor
-            fout <<"Enemy hit in Body Armor for: " <<high % 100 <<"% out of "
-            <<weapon.getDmg() <<" = " <<formula - 1 <<" (+ 1)" <<std::endl
-            <<"Body Armor before: " <<enemy.armor.getBody() <<std::endl
-            <<"Body Armor after: " <<enemy.armor.getBody() - formula <<std::endl;
-
-            //damage calculation
-            if(formula >= enemy.armor.getBody())
-                enemy.armor.setBody(0);
-            else
-                enemy.armor.setBody(enemy.armor.getBody() - formula);
-        }
-        //armor is broken
-        else{
-            //logs - Broken Body Armor
-            fout <<"Armor broken: enemy hit in HP for: " <<high % 100 <<"% out of "
-            <<weapon.getDmg() <<" = " <<formula - 1 <<" (+ 1)" <<std::endl
-            <<"HP before: " <<enemy.HP <<std::endl;
-
-            //damage calculation
-            enemy.HP -= formula - 1;
-
-            //logs - Broken Body Armor
-            fout <<"HP after: " <<enemy.HP <<std::endl;
-        }
-    }
-    else{
-        //armor isn't broken
-        if(enemy.armor.getLegs() > 0){
-            //logs - Legs Armor
-            fout <<"Enemy hit in Legs Armor for: " <<high % 100 <<"% out of "
-            <<weapon.getDmg() <<" = " <<formula - 1 <<" (+ 1)" <<std::endl
-            <<"Legs Armor before: " <<enemy.armor.getLegs() <<std::endl
-            <<"Legs Armor after: " <<enemy.armor.getLegs() - formula <<std::endl;
-
-            //damage calculation
-            if(formula >= enemy.armor.getLegs())
-                enemy.armor.setLegs(0);
-            else
-                enemy.armor.setLegs(enemy.armor.getLegs() - formula);
-        }
-        //armor is broken
-        else{
-            //logs - Broken Legs Armor
-            fout <<"Armor broken: enemy hit in HP for: " <<high % 100 <<"% out of "
-            <<weapon.getDmg() <<" = " <<formula - 1 <<" (+ 1)" <<std::endl
-            <<"HP before: " <<enemy.HP <<std::endl;
-
-            //damage calculation
-            enemy.HP -= formula - 1;
-
-            //logs - Broken Legs Armor
-            fout <<"HP after: " <<enemy.HP <<std::endl;
-        }
-    }
+    if(chance <= HEAD_CHANCE)
+        enemy.attackEnemyHead(enemy, high, formula, fout);
+    else if(chance <= BODY_CHANCE)
+        enemy.attackEnemyBody(enemy, high, formula, fout);
+    else
+        enemy.attackEnemyLegs(enemy, high, formula, fout);
     
     //close logging
     fout.close();
