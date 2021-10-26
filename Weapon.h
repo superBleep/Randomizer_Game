@@ -31,5 +31,6 @@ class Weapon
         //operator<<
         friend std::ostream &operator<<(std::ostream &os, Weapon& w){
             os <<"Weapon damage: " <<w.dmg;
+            return os;
         }
 };

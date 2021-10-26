@@ -9,6 +9,7 @@ class Player {
         int HP;
         int Stamina;
         int Defence;
+        int Parry;
 
         const int HEAD_CHANCE = 15;
         const int BODY_CHANCE = 75;
@@ -39,13 +40,19 @@ class Player {
         //destructor
         ~Player() {}
 
-        //getters
+        //getters and setters
         std::string getName(){
             return this->name;
         }
-
         int getHP(){
             return this->HP;
+        }
+        int getStamina(){
+            return this->Stamina;
+        }
+
+        void setStamina(int Stamina){
+            this->Stamina = Stamina;
         }
 
         //operator<<
@@ -55,7 +62,10 @@ class Player {
         friend std::istream &operator>>(std::istream &is, Player &p);
 
         //attack function
-        void attackEnemy(Player &enemy);
+        void attackEnemy(Player &enemy, std::ostream &fout);
+
+        //parry function
+        void parryAttack(std::string state);
     private:
         //attack head function
         void attackEnemyHead(Player &enemy, int high, int formula, std::ostream &fout);
@@ -116,8 +126,8 @@ std::istream &operator>>(std::istream &is, Player &p){
     is >>p.name;
 
     std::cout <<"Choose a TYPE for your hero:" <<std::endl;
-    std::cout <<"Type_1 -> Base Stats: HP = 100 Stamina = 20 Defence = 63" <<std::endl;
-    std::cout <<"Type_2 -> Base Stats: HP = 200 Stamina = 40 Defence = 27" <<std::endl;
+    std::cout <<"Type_1 -> Base Stats: HP = 100 Stamina = 20 Defence = 63 Parry = 15" <<std::endl;
+    std::cout <<"Type_2 -> Base Stats: HP = 200 Stamina = 40 Defence = 27 Parry = 20" <<std::endl;
     std::cout <<"> ";
 
     is >>p.type;
@@ -126,11 +136,13 @@ std::istream &operator>>(std::istream &is, Player &p){
         p.HP = 100;
         p.Stamina = 20;
         p.Defence = 63;
+        p.Parry = 15;
     }
     if(p.type == "Type_2"){
         p.HP = 200;
         p.Stamina = 40;
         p.Defence = 27;
+        p.Parry = 20;
     }
 
     return is;
@@ -141,10 +153,8 @@ void Player::attackEnemyHead(Player &enemy, int high, int formula, std::ostream 
     //armor isn't broken
     if(enemy.armor.getHead() > 0){
         //logs - Head Armor
-        fout <<"Enemy hit in Head Armor for: " <<high % 100 <<"% out of "
-        <<weapon.getDmg() <<" = " <<formula - 1 <<" (+ 1)" <<std::endl
-        <<"Head Armor before: " <<enemy.armor.getHead() <<std::endl
-        <<"Head Armor after: " <<enemy.armor.getHead() - formula <<std::endl;
+        fout <<enemy.getName() <<" hit in Head Armor for " <<formula
+        <<" (" <<high % 100  <<"% out of " <<weapon.getDmg() <<")" <<std::endl;
 
         std::cout <<"(" <<formula <<" absorbed by " <<enemy.getName() <<"'s Head Armor)" <<std::endl;
 
@@ -157,18 +167,14 @@ void Player::attackEnemyHead(Player &enemy, int high, int formula, std::ostream 
     //armor is broken
     else{
         //logs - Broken Head Armor
-        fout <<"Armor broken: enemy hit in HP for: " <<high % 100 <<"% out of "
-        <<weapon.getDmg() <<" = " <<formula - 1 <<" (+ 1)" <<std::endl
-        <<"HP before: " <<enemy.HP <<std::endl;
+        fout <<enemy.getName() <<" hit in HP (Armor broken) for " <<formula
+        <<" (" <<high % 100  <<"% out of " <<weapon.getDmg() <<")" <<std::endl;
 
         std::cout <<"Head Armor broken! Additional "
         <<formula <<" damage to " <<enemy.getName() <<"'s HP." <<std::endl;
 
         //damage calculation
         enemy.HP -= formula - 1;
-
-        //logs - Broken Head Armor
-        fout <<"HP after: " <<enemy.HP <<std::endl;
     }
 }
 
@@ -177,10 +183,8 @@ void Player::attackEnemyBody(Player &enemy, int high, int formula, std::ostream 
     //armor isn't broken
     if(enemy.armor.getBody() > 0){
         //logs - Body Armor
-        fout <<"Enemy hit in Body Armor for: " <<high % 100 <<"% out of "
-        <<weapon.getDmg() <<" = " <<formula - 1 <<" (+ 1)" <<std::endl
-        <<"Body Armor before: " <<enemy.armor.getBody() <<std::endl
-        <<"Body Armor after: " <<enemy.armor.getBody() - formula <<std::endl;
+        fout <<enemy.getName() <<" hit in Body Armor for " <<formula
+        <<" (" <<high % 100  <<"% out of " <<weapon.getDmg() <<")" <<std::endl;
 
         std::cout <<"(" <<formula <<" absorbed by " <<enemy.getName() <<"'s Body Armor)" <<std::endl;
 
@@ -193,18 +197,14 @@ void Player::attackEnemyBody(Player &enemy, int high, int formula, std::ostream 
     //armor is broken
     else{
         //logs - Broken Body Armor
-        fout <<"Armor broken: enemy hit in HP for: " <<high % 100 <<"% out of "
-        <<weapon.getDmg() <<" = " <<formula - 1 <<" (+ 1)" <<std::endl
-        <<"HP before: " <<enemy.HP <<std::endl;
+        fout <<enemy.getName() <<" hit in HP (Armor broken) for " <<formula
+        <<" (" <<high % 100  <<"% out of " <<weapon.getDmg() <<")" <<std::endl;
 
         std::cout <<"Body Armor broken! Additional "
         <<formula <<" damage to " <<enemy.getName() <<"'s HP." <<std::endl;
 
         //damage calculation
         enemy.HP -= formula - 1;
-
-        //logs - Broken Body Armor
-        fout <<"HP after: " <<enemy.HP <<std::endl;
     }
 }
 
@@ -213,12 +213,10 @@ void Player::attackEnemyLegs(Player &enemy, int high, int formula, std::ostream 
     //armor isn't broken
     if(enemy.armor.getLegs() > 0){
         //logs - Legs Armor
-        fout <<"Enemy hit in Legs Armor for: " <<high % 100 <<"% out of "
-        <<weapon.getDmg() <<" = " <<formula - 1 <<" (+ 1)" <<std::endl
-        <<"Legs Armor before: " <<enemy.armor.getLegs() <<std::endl
-        <<"Legs Armor after: " <<enemy.armor.getLegs() - formula <<std::endl;
+        fout <<enemy.getName() <<" hit in Legs Armor for " <<formula
+        <<" (" <<high % 100  <<"% out of " <<weapon.getDmg() <<")" <<std::endl;
 
-        std::cout <<"(" <<formula <<" absorbed by " <<enemy.getName() <<"'s Legs Armor)";
+        std::cout <<"(" <<formula <<" absorbed by " <<enemy.getName() <<"'s Legs Armor)" <<std::endl;
 
         //damage calculation
         if(formula >= enemy.armor.getLegs())
@@ -229,27 +227,19 @@ void Player::attackEnemyLegs(Player &enemy, int high, int formula, std::ostream 
     //armor is broken
     else{
         //logs - Broken Legs Armor
-        fout <<"Legs Armor broken: enemy hit in HP for: " <<high % 100 <<"% out of "
-        <<weapon.getDmg() <<" = " <<formula - 1 <<" (+ 1)" <<std::endl
-        <<"HP before: " <<enemy.HP <<std::endl;
+        fout <<enemy.getName() <<" hit in HP (Armor broken) for " <<formula
+        <<" (" <<high % 100  <<"% out of " <<weapon.getDmg() <<")" <<std::endl;
 
         std::cout <<"Armor broken! Additional "
         <<formula <<" damage to " <<enemy.getName() <<"'s HP." <<std::endl;
 
         //damage calculation
         enemy.HP -= formula - 1;
-
-        //logs - Broken Legs Armor
-        fout <<"HP after: " <<enemy.HP <<std::endl;
     }
 }
 
 //attack function
-void Player::attackEnemy(Player &enemy){
-    //open file for logging
-    std::ofstream fout;
-    fout.open("game_logs.out");
-
+void Player::attackEnemy(Player &enemy, std::ostream &fout){
     //random hit accuracy interval
     int chance = rand() % 101;
 
@@ -275,18 +265,14 @@ void Player::attackEnemy(Player &enemy){
 
     ///-----------------HP-----------------
     //logs - HP
-    fout <<"Enemy hit in HP for: " <<low % 100 <<"% out of "
-    <<weapon.getDmg() <<" = " <<low % 100 * weapon.getDmg() / 100 <<std::endl
-    <<"HP before: " <<enemy.HP <<std::endl;
+    fout <<enemy.getName() <<" hit in HP for " <<low % 100 * weapon.getDmg() / 100
+    <<" (" <<low % 100 <<"% out of " <<weapon.getDmg() <<")" <<std::endl;
 
     std::cout <<low % 100 * weapon.getDmg() / 100 <<" dmg dealt to " <<enemy.getName()
     <<"'s HP!" <<std::endl;
 
     //damage calculation
     enemy.HP -= low % 100 * weapon.getDmg() / 100;
-
-    //logs - HP
-    fout <<"HP after: " <<enemy.HP <<std::endl;
 
     ///-----------------Armor---------------
     int formula = high % 100 * weapon.getDmg() / 100 + 1;
@@ -298,7 +284,12 @@ void Player::attackEnemy(Player &enemy){
         enemy.attackEnemyBody(enemy, high, formula, fout);
     else
         enemy.attackEnemyLegs(enemy, high, formula, fout);
-    
-    //close logging
-    fout.close();
+}
+
+//parry function
+void Player::parryAttack(std::string state){
+    if(state == "buff")
+        Defence += Defence * Parry / 100;
+    if(state == "debuff")
+        Defence -= Defence * Parry / 100;
 }
