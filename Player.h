@@ -68,28 +68,42 @@ class Player {
         void parryAttack(std::string state);
     private:
         //attack head function
-        void attackEnemyHead(Player &enemy, int high, int formula, std::ostream &fout);
+        void attackEnemyHead(Player &enemy, int formula, std::ostream &fout);
 
         //attack body function
-        void attackEnemyBody(Player &enemy, int high, int formula, std::ostream &fout);
+        void attackEnemyBody(Player &enemy, int formula, std::ostream &fout);
 
         //attack legs function
-        void attackEnemyLegs(Player &enemy, int high, int formula, std::ostream &fout);
+        void attackEnemyLegs(Player &enemy, int formula, std::ostream &fout);
 };
 
 //constructor
 Player::Player(std::string name, std::string type) {
     this->name = name;
     this->type = type;
-    if(type == "Type_1"){
+    if(type == "Basic"){
         HP = 100;
-        Stamina = 20;
-        Defence = 63;
+        Stamina = 30;
+        Defence = 50;
+        Parry = 15;
     }
-    if(type == "Type_2"){
+    if(type == "Light"){
+        HP = 50;
+        Stamina = 60;
+        Defence = 35;
+        Parry = 30;
+    }
+    if(type == "Heavy"){
         HP = 200;
-        Stamina = 40;
-        Defence = 27;
+        Stamina = 10;
+        Defence = 65;
+        Parry = 5;
+    }
+    if(type == "godmode"){
+        HP = 20000;
+        Stamina = 20000;
+        Defence = 100;
+        Parry = 0;
     }
 }
 
@@ -119,42 +133,55 @@ std::ostream &operator<<(std::ostream &os, Player &p){
 
 //operator>> and initializer list
 std::istream &operator>>(std::istream &is, Player &p){
-    std::cout <<"##### Randomizer Game: C++ OOP Text-based RPG #####" <<std::endl;
+    std::cout <<"##### Randomizer! #####" <<std::endl;
     std::cout <<"Choose a NAME for your hero:" <<std::endl;
     std::cout <<"> ";
 
     is >>p.name;
 
-    std::cout <<"Choose a TYPE for your hero:" <<std::endl;
-    std::cout <<"Type_1 -> Base Stats: HP = 100 Stamina = 20 Defence = 63 Parry = 15" <<std::endl;
-    std::cout <<"Type_2 -> Base Stats: HP = 200 Stamina = 40 Defence = 27 Parry = 20" <<std::endl;
+    std::cout <<std::endl <<"Choose a TYPE for your hero:" <<std::endl;
+    std::cout <<"Basic -> Base Stats: HP = 100 Stamina = 30 Defence = 50 Parry = 15" <<std::endl;
+    std::cout <<"Light -> Base Stats: HP = 50 Stamina = 60 Defence = 35 Parry = 30" <<std::endl;
+    std::cout <<"Heavy -> Base Stats: HP = 200 Stamina = 10 Defence = 65 Parry = 5" <<std::endl;
+    std::cout <<"??? -> Base Stats: HP = ??? Stamina = ??? Defence = ??? Parry = ???" <<std::endl;
     std::cout <<"> ";
 
     is >>p.type;
 
-    if(p.type == "Type_1"){
+    if(p.type == "Basic"){
         p.HP = 100;
-        p.Stamina = 20;
-        p.Defence = 63;
+        p.Stamina = 30;
+        p.Defence = 50;
         p.Parry = 15;
     }
-    if(p.type == "Type_2"){
+    if(p.type == "Light"){
+        p.HP = 50;
+        p.Stamina = 60;
+        p.Defence = 35;
+        p.Parry = 30;
+    }
+    if(p.type == "Heavy"){
         p.HP = 200;
-        p.Stamina = 40;
-        p.Defence = 27;
-        p.Parry = 20;
+        p.Stamina = 10;
+        p.Defence = 65;
+        p.Parry = 5;
+    }
+    if(p.type == "godmode"){
+        p.HP = 20000;
+        p.Stamina = 20000;
+        p.Defence = 100;
+        p.Parry = 0;
     }
 
     return is;
 }
 
 //attack head function
-void Player::attackEnemyHead(Player &enemy, int high, int formula, std::ostream &fout){
+void Player::attackEnemyHead(Player &enemy, int formula, std::ostream &fout){
     //armor isn't broken
     if(enemy.armor.getHead() > 0){
         //logs - Head Armor
-        fout <<enemy.getName() <<" hit in Head Armor for " <<formula
-        <<" (" <<high % 100  <<"% out of " <<weapon.getDmg() <<")" <<std::endl;
+        fout <<enemy.getName() <<" hit in Head Armor for " <<formula <<std::endl;
 
         std::cout <<"(" <<formula <<" absorbed by " <<enemy.getName() <<"'s Head Armor)" <<std::endl;
 
@@ -167,8 +194,7 @@ void Player::attackEnemyHead(Player &enemy, int high, int formula, std::ostream 
     //armor is broken
     else{
         //logs - Broken Head Armor
-        fout <<enemy.getName() <<" hit in HP (Armor broken) for " <<formula
-        <<" (" <<high % 100  <<"% out of " <<weapon.getDmg() <<")" <<std::endl;
+        fout <<enemy.getName() <<" hit in HP (Armor broken) for " <<formula <<std::endl;
 
         std::cout <<"Head Armor broken! Additional "
         <<formula <<" damage to " <<enemy.getName() <<"'s HP." <<std::endl;
@@ -179,12 +205,11 @@ void Player::attackEnemyHead(Player &enemy, int high, int formula, std::ostream 
 }
 
 //attack body function
-void Player::attackEnemyBody(Player &enemy, int high, int formula, std::ostream &fout){
+void Player::attackEnemyBody(Player &enemy, int formula, std::ostream &fout){
     //armor isn't broken
     if(enemy.armor.getBody() > 0){
         //logs - Body Armor
-        fout <<enemy.getName() <<" hit in Body Armor for " <<formula
-        <<" (" <<high % 100  <<"% out of " <<weapon.getDmg() <<")" <<std::endl;
+        fout <<enemy.getName() <<" hit in Body Armor for " <<formula <<std::endl;
 
         std::cout <<"(" <<formula <<" absorbed by " <<enemy.getName() <<"'s Body Armor)" <<std::endl;
 
@@ -197,8 +222,7 @@ void Player::attackEnemyBody(Player &enemy, int high, int formula, std::ostream 
     //armor is broken
     else{
         //logs - Broken Body Armor
-        fout <<enemy.getName() <<" hit in HP (Armor broken) for " <<formula
-        <<" (" <<high % 100  <<"% out of " <<weapon.getDmg() <<")" <<std::endl;
+        fout <<enemy.getName() <<" hit in HP (Armor broken) for " <<formula <<std::endl;
 
         std::cout <<"Body Armor broken! Additional "
         <<formula <<" damage to " <<enemy.getName() <<"'s HP." <<std::endl;
@@ -209,12 +233,11 @@ void Player::attackEnemyBody(Player &enemy, int high, int formula, std::ostream 
 }
 
 //attack legs function
-void Player::attackEnemyLegs(Player &enemy, int high, int formula, std::ostream &fout){
+void Player::attackEnemyLegs(Player &enemy, int formula, std::ostream &fout){
     //armor isn't broken
     if(enemy.armor.getLegs() > 0){
         //logs - Legs Armor
-        fout <<enemy.getName() <<" hit in Legs Armor for " <<formula
-        <<" (" <<high % 100  <<"% out of " <<weapon.getDmg() <<")" <<std::endl;
+        fout <<enemy.getName() <<" hit in Legs Armor for " <<formula <<std::endl;
 
         std::cout <<"(" <<formula <<" absorbed by " <<enemy.getName() <<"'s Legs Armor)" <<std::endl;
 
@@ -227,8 +250,7 @@ void Player::attackEnemyLegs(Player &enemy, int high, int formula, std::ostream 
     //armor is broken
     else{
         //logs - Broken Legs Armor
-        fout <<enemy.getName() <<" hit in HP (Armor broken) for " <<formula
-        <<" (" <<high % 100  <<"% out of " <<weapon.getDmg() <<")" <<std::endl;
+        fout <<enemy.getName() <<" hit in HP (Armor broken) for " <<formula <<std::endl;
 
         std::cout <<"Armor broken! Additional "
         <<formula <<" damage to " <<enemy.getName() <<"'s HP." <<std::endl;
@@ -265,8 +287,7 @@ void Player::attackEnemy(Player &enemy, std::ostream &fout){
 
     ///-----------------HP-----------------
     //logs - HP
-    fout <<enemy.getName() <<" hit in HP for " <<low % 100 * weapon.getDmg() / 100
-    <<" (" <<low % 100 <<"% out of " <<weapon.getDmg() <<")" <<std::endl;
+    fout <<enemy.getName() <<" hit in HP for " <<low % 100 * weapon.getDmg() / 100 <<std::endl;
 
     std::cout <<low % 100 * weapon.getDmg() / 100 <<" dmg dealt to " <<enemy.getName()
     <<"'s HP!" <<std::endl;
@@ -279,11 +300,11 @@ void Player::attackEnemy(Player &enemy, std::ostream &fout){
 
     //+1 to every scenario to fix division loss
     if(chance <= HEAD_CHANCE)
-        enemy.attackEnemyHead(enemy, high, formula, fout);
+        enemy.attackEnemyHead(enemy, formula, fout);
     else if(chance <= BODY_CHANCE)
-        enemy.attackEnemyBody(enemy, high, formula, fout);
+        enemy.attackEnemyBody(enemy, formula, fout);
     else
-        enemy.attackEnemyLegs(enemy, high, formula, fout);
+        enemy.attackEnemyLegs(enemy, formula, fout);
 }
 
 //parry function
