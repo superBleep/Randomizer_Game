@@ -1,5 +1,4 @@
 #include "Player.hpp"
-#include "Player.cpp"
 
 int game(Player &hero, Player &enemy, std::ostream &fout){
     int opt;
