@@ -1,4 +1,4 @@
-#include "player.hpp"
+#include "Player.hpp"
 
 class Hero : public Player {
         int Stamina;

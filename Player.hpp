@@ -39,7 +39,7 @@ class Player {
         }
 
         //destructor
-        ~Player() {}
+        virtual ~Player() {}
 
         //getters and setters
         std::string getName(){
