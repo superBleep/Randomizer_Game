@@ -1,6 +1,8 @@
 #include "Player.hpp"
+#include "Hero.hpp"
+#include "Enemy.hpp"
 
-int game(Player &hero, Player &enemy, std::ostream &fout){
+int game(Hero &hero, Enemy &enemy, std::ostream &fout){
     int opt;
     while(1){
         std::cout <<"------------------------" <<std::endl;
@@ -64,7 +66,7 @@ int game(Player &hero, Player &enemy, std::ostream &fout){
     }
 }
 
-int start(Player &hero, Player &enemy, std::ostream &fout){
+int start(Hero &hero, Enemy &enemy, std::ostream &fout){
     int opt;
     while(1){
         std::cout <<"------------------------" <<std::endl;
@@ -107,8 +109,11 @@ int main(){
     srand(time(NULL));
 
     //read player and enemy data
-    Player hero, enemy("Badguy", "Basic");
+    Enemy enemy("Ala_rau");
+    Hero hero;
     std::cin >>hero;
+    hero.set_stats();
+    enemy.set_stats();
 
     //open file for logging
     std::ofstream fout;
