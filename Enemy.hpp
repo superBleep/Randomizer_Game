@@ -9,13 +9,19 @@ class Enemy : public Player {
         const int MIN_ENEMY_PARRY = 5;
     public:
         //constructor
-        Enemy(std::string name);
+        Enemy(const std::string name);
 
         //operator<<
         friend std::ostream &operator<<(std::ostream &os, Enemy &e);
 
         void set_stats();
 };
+
+//constructor
+Enemy::Enemy(const std::string name){
+    set_stats();
+    this->name = name;
+}
 
 //set stats randomly
 void Enemy::set_stats(){
@@ -34,9 +40,4 @@ std::ostream &operator<<(std::ostream &os, Enemy &e){
     <<e.armor;
 
     return os;
-}
-
-//constructor
-Enemy::Enemy(std::string name){
-    this->name = name;
 }

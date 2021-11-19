@@ -10,6 +10,15 @@
 #include "Armor.hpp"
 
 class Player {
+    private:
+        //attack head function
+        void attackEnemyHead(Player &enemy, int formula, std::ostream &fout);
+
+        //attack body function
+        void attackEnemyBody(Player &enemy, int formula, std::ostream &fout);
+
+        //attack legs function
+        void attackEnemyLegs(Player &enemy, int formula, std::ostream &fout);
     protected:
         Weapon weapon;
         Armor armor;
@@ -20,6 +29,9 @@ class Player {
 
         const int HEAD_CHANCE = 15;
         const int BODY_CHANCE = 75;
+
+        //set stats
+        virtual void set_stats() = 0;
     public:
         //default constructor
         Player() {}
@@ -54,18 +66,6 @@ class Player {
 
         //parry function
         void parryAttack(std::string state);
-
-        //set stats
-        virtual void set_stats() = 0;
-    private:
-        //attack head function
-        void attackEnemyHead(Player &enemy, int formula, std::ostream &fout);
-
-        //attack body function
-        void attackEnemyBody(Player &enemy, int formula, std::ostream &fout);
-
-        //attack legs function
-        void attackEnemyLegs(Player &enemy, int formula, std::ostream &fout);
 };
 
 //copy constructor

@@ -108,12 +108,10 @@ int main(){
     //time seed for random number generator
     srand(time(NULL));
 
-    //read player and enemy data
+    //read hero and enemy data
     Enemy enemy("Ala_rau");
     Hero hero;
     std::cin >>hero;
-    hero.set_stats();
-    enemy.set_stats();
 
     //open file for logging
     std::ofstream fout;
