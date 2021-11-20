@@ -111,8 +111,14 @@ int main(){
     //read hero and enemy data
     Enemy enemy("Ala_rau");
     Hero hero;
-    std::cin >>hero;
-
+    
+    try {
+        std::cin >>hero;
+    }catch(heroTypeException e){
+        std::cout <<"heroTypeException caught: " <<e.what() <<std::endl;
+        return 0;
+    }
+    
     //open file for logging
     std::ofstream fout;
     fout.open("game_logs.out");

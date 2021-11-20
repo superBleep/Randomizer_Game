@@ -1,4 +1,5 @@
 #include "Player.hpp"
+#include "exceptions.hpp"
 
 class Hero : public Player {
         int Stamina;
@@ -64,6 +65,9 @@ std::istream &operator>>(std::istream &is, Hero &h){
     std::cout <<"> ";
 
     is >>h.type;
+    if(h.type != "Basic" && h.type != "basic" && h.type != "Light" 
+    && h.type != "light" && h.type != "Heavy" && h.type != "heavy")
+        throw heroTypeException();
 
     h.set_stats();
 
@@ -77,6 +81,7 @@ std::ostream &operator<<(std::ostream &os, Hero &h){
     <<"HP: " <<h.HP <<std::endl
     <<"Stamina: " <<h.Stamina <<std::endl
     <<"Defence: " <<h.Defence <<std::endl
+    <<"Parry: " <<h.Parry <<std::endl
     <<h.weapon <<std::endl
     <<std::endl <<"Armor:" <<std::endl
     <<h.armor;

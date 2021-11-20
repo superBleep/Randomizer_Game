@@ -35,6 +35,7 @@ std::ostream &operator<<(std::ostream &os, Enemy &e){
     os <<"Name: " <<e.name <<std::endl
     <<"HP: " <<e.HP <<std::endl
     <<"Defence: " <<e.Defence <<std::endl
+    <<"Parry: " <<e.Parry <<std::endl
     <<e.weapon <<std::endl
     <<std::endl <<"Armor:" <<std::endl
     <<e.armor;
