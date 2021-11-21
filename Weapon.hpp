@@ -29,7 +29,7 @@ class Weapon
         }
 
         //operator<<
-        friend std::ostream &operator<<(std::ostream &os, Weapon& w){
+        friend std::ostream &operator<<(std::ostream &os, const Weapon& w){
             os <<"Weapon damage: " <<w.dmg;
             return os;
         }

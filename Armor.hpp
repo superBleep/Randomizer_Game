@@ -53,7 +53,7 @@ class Armor
         }
 
         //operator<<
-        friend std::ostream &operator<<(std::ostream &os, Armor& w){
+        friend std::ostream &operator<<(std::ostream &os, const Armor& w){
             os <<"Head: " <<w.head <<std::endl
             <<"Body: " <<w.body <<std::endl
             <<"Legs: " <<w.legs <<std::endl;

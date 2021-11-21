@@ -1,6 +1,4 @@
 #include "Player.hpp"
-#include "Hero.hpp"
-#include "Enemy.hpp"
 
 int game(Hero &hero, Enemy &enemy, std::ostream &fout){
     int opt;
@@ -33,7 +31,7 @@ int game(Hero &hero, Enemy &enemy, std::ostream &fout){
                     fout <<"------------------------" <<std::endl;
 
                     //cut stamina by 10 points (Player::Stamina should be divisible by 10)
-                    hero.setStamina(hero.getStamina() - 10);
+                    hero.decreaseStamina();
                 }
                 else{
                     std::cout <<"You ran out of stamina! Wait for it to regenerate..." <<std::endl;
@@ -56,7 +54,7 @@ int game(Hero &hero, Enemy &enemy, std::ostream &fout){
 
                 //regen player's stamina by 10 points
                 if(hero.getStamina() <= max_st)
-                    hero.setStamina(hero.getStamina() + 10);
+                    hero.increaseStamina();
 
                 //return to main menu if player is killed
                 if(hero.getHP() <= 0)
@@ -114,7 +112,7 @@ int main(){
     
     try {
         std::cin >>hero;
-    }catch(heroTypeException e){
+    }catch(heroTypeException &e){
         std::cout <<"heroTypeException caught: " <<e.what() <<std::endl;
         return 0;
     }

@@ -3,12 +3,11 @@
 #include <ctime>
 #include <cstdlib>
 
-#ifndef PLAYER_H
-#define PLAYER_H
-
 #include "Weapon.hpp"
 #include "Armor.hpp"
+#include "exceptions.hpp"
 
+///PLAYER (ABSTRACT CLASS)
 class Player {
     private:
         //attack head function
@@ -215,4 +214,142 @@ void Player::parryAttack(std::string state){
         Defence -= Defence * Parry / 100;
 }
 
-#endif
+
+///HERO (PLAYER SUBCLASS)
+class Hero : public Player {
+        int Stamina;
+        std::string type;
+        
+    public:
+        //operator<<
+        friend std::ostream &operator<<(std::ostream &os, const Hero &p);
+
+        //operator>> and initializer list
+        friend std::istream &operator>>(std::istream &is, Hero &p);
+
+        //Stamina getter
+        int getStamina(){
+            return this->Stamina;
+        }
+
+        //Stamina increase/decrease functions
+        void increaseStamina(){
+            this->Stamina += 10;
+        }
+        void decreaseStamina(){
+            this->Stamina -= 10;
+        }
+        void set_stats();
+};
+
+//set stats based on type input
+void Hero::set_stats(){
+    if(type == "Basic"){
+        HP = 100;
+        Stamina = 30;
+        Defence = 50;
+        Parry = 15;
+    }
+    if(type == "Light"){
+        HP = 50;
+        Stamina = 60;
+        Defence = 35;
+        Parry = 30;
+    }
+    if(type == "Heavy"){
+        HP = 200;
+        Stamina = 10;
+        Defence = 65;
+        Parry = 5;
+    }
+    if(type == "debug"){
+        HP = 20000;
+        Stamina = 20000;
+        Defence = 100;
+        Parry = 0;
+    }
+}
+
+//operator>> and initializer list
+std::istream &operator>>(std::istream &is, Hero &h){
+    std::cout <<"##### Randomizer! #####" <<std::endl;
+    std::cout <<"Choose a NAME for your hero:" <<std::endl;
+    std::cout <<"> ";
+
+    is >>h.name;
+
+    std::cout <<std::endl <<"Choose a TYPE for your hero:" <<std::endl;
+    std::cout <<"Basic -> Base Stats: HP = 100 Stamina = 30 Defence = 50 Parry = 15" <<std::endl;
+    std::cout <<"Light -> Base Stats: HP = 50 Stamina = 60 Defence = 35 Parry = 30" <<std::endl;
+    std::cout <<"Heavy -> Base Stats: HP = 200 Stamina = 10 Defence = 65 Parry = 5" <<std::endl;
+    std::cout <<"> ";
+
+    is >>h.type;
+    if(h.type != "Basic" && h.type != "basic" && h.type != "Light" 
+    && h.type != "light" && h.type != "Heavy" && h.type != "heavy")
+        throw heroTypeException();
+
+    h.set_stats();
+
+    return is;
+}
+
+//operator<<
+std::ostream &operator<<(std::ostream &os, const Hero &h){
+    os <<"Name: " <<h.name <<std::endl
+    <<"Type: " <<h.type <<std::endl
+    <<"HP: " <<h.HP <<std::endl
+    <<"Stamina: " <<h.Stamina <<std::endl
+    <<"Defence: " <<h.Defence <<std::endl
+    <<"Parry: " <<h.Parry <<std::endl
+    <<h.weapon <<std::endl
+    <<std::endl <<"Armor:" <<std::endl
+    <<h.armor;
+
+    return os;
+}
+
+
+///ENEMY (PLAYER SUBCLASS)
+class Enemy : public Player {
+        const int MAX_ENEMY_HP = 200;
+        const int MIN_ENEMY_HP = 50;
+        const int MAX_ENEMY_DEFENCE = 65;
+        const int MIN_ENEMY_DEFENCE = 35;
+        const int MAX_ENEMY_PARRY = 30;
+        const int MIN_ENEMY_PARRY = 5;
+
+        void set_stats();
+    public:
+        //constructor
+        Enemy(const std::string& name);
+
+        //operator<<
+        friend std::ostream &operator<<(std::ostream &os, const Enemy &e);
+};
+
+//constructor
+Enemy::Enemy(const std::string& name){
+    set_stats();
+    this->name = name;
+}
+
+//set stats randomly
+void Enemy::set_stats(){
+    HP = (rand() % (MAX_ENEMY_HP + 1 - MIN_ENEMY_HP)) + MIN_ENEMY_HP;
+    Defence = (rand() % (MAX_ENEMY_DEFENCE + 1 - MIN_ENEMY_DEFENCE)) + MIN_ENEMY_DEFENCE;
+    Parry = (rand() % (MAX_ENEMY_PARRY + 1 - MIN_ENEMY_PARRY)) + MAX_ENEMY_PARRY;
+}
+
+//operator<<
+std::ostream &operator<<(std::ostream &os, const Enemy &e){
+    os <<"Name: " <<e.name <<std::endl
+    <<"HP: " <<e.HP <<std::endl
+    <<"Defence: " <<e.Defence <<std::endl
+    <<"Parry: " <<e.Parry <<std::endl
+    <<e.weapon <<std::endl
+    <<std::endl <<"Armor:" <<std::endl
+    <<e.armor;
+
+    return os;
+}
