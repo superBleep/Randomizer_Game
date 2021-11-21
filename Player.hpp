@@ -227,9 +227,12 @@ class Hero : public Player {
         //operator>> and initializer list
         friend std::istream &operator>>(std::istream &is, Hero &p);
 
-        //Stamina getter
+        //Stamina getter and setter
         int getStamina(){
             return this->Stamina;
+        }
+        void setStamina(int Stamina){
+            this->Stamina = Stamina;
         }
 
         //Stamina increase/decrease functions

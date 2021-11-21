@@ -1,4 +1,8 @@
+///TODO: Come up with a healing method for Player/Hero
+
 #include "Player.hpp"
+#include <memory>
+#include <stack>
 
 int game(Hero &hero, Enemy &enemy, std::ostream &fout){
     int opt;
@@ -64,13 +68,15 @@ int game(Hero &hero, Enemy &enemy, std::ostream &fout){
     }
 }
 
-int start(Hero &hero, Enemy &enemy, std::ostream &fout){
-    int opt;
+int start(Hero &hero, std::stack<std::unique_ptr<Enemy>> &enemy_stack, std::ostream &fout){
+    int opt, result, init_stamina;
+    init_stamina = hero.getStamina();
+
     while(1){
         std::cout <<"------------------------" <<std::endl;
         std::cout <<"Choose an option:" <<std::endl;
         std::cout <<"1) Check STATS" <<std::endl;
-        std::cout <<"2) FIGHT enemy" <<std::endl;
+        std::cout <<"2) FIGHT enemies" <<std::endl;
         std::cout <<"3) QUIT game" <<std::endl;
         std::cout <<"> ";
 
@@ -83,15 +89,25 @@ int start(Hero &hero, Enemy &enemy, std::ostream &fout){
                 std::cout <<hero;
                 break;
             case(2):
-                //fight the enemy and evaluate who won
-                if(game(hero, enemy, fout) == 0)
-                    std::cout <<std::endl <<"You were slain!" <<std::endl;
-                else
-                    std::cout <<std::endl <<"You killed " <<enemy.getName() 
-                    <<"! You win!" <<std::endl;
+                //fight enemies from the stack until either the stack is empty or you die
+                result = game(hero, *enemy_stack.top(), fout);
+                if(result == 0){
+                    std::cout <<std::endl <<"You were killed. Game over!" <<std::endl;
+                    return 1;
+                }
+                else{
+                    std::cout <<"------------------------";
+                    std::cout <<std::endl <<"You killed " <<enemy_stack.top()->getName() <<std::endl;
 
-                //return to main after result
-                return 1;
+                    hero.setStamina(init_stamina);
+                    enemy_stack.pop();
+
+                    //if you killed all the enemies, return to main
+                    if(enemy_stack.empty() == 1){
+                        std::cout <<std::endl <<"You killed all the enemies! You win!" <<std::endl;
+                        return 1;
+                    }
+                }
                 break;
             case(3):
                 std::cout <<"You quit the game. :(" <<std::endl;
@@ -106,10 +122,15 @@ int main(){
     //time seed for random number generator
     srand(time(NULL));
 
-    //read hero and enemy data
-    Enemy enemy("Ala_rau");
+    //enemies to fight
+    std::stack<std::unique_ptr<Enemy>> enemy_stack;
+    enemy_stack.push(std::make_unique<Enemy>("Brutus"));
+    enemy_stack.push(std::make_unique<Enemy>("Leroy"));
+    
+    //read hero data
     Hero hero;
     
+    //check hero for errors
     try {
         std::cin >>hero;
     }catch(heroTypeException &e){
@@ -122,7 +143,7 @@ int main(){
     fout.open("game_logs.out");
 
     //main menu
-    start(hero, enemy, fout);
+    start(hero, enemy_stack, fout);
 
     //close logging
     fout.close();
