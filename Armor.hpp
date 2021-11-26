@@ -4,8 +4,8 @@ class Armor
         int body;
         int legs;
 
-        const int MIN_AP = 20;
-        const int MAX_AP = 100;
+        const static int MIN_AP = 20;
+        const static int MAX_AP = 100;
     public:
         //constructor and initializer list
         Armor(){

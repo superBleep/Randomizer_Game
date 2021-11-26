@@ -2,6 +2,7 @@
 #include <fstream>
 #include <ctime>
 #include <cstdlib>
+#include <vector>
 
 #include "Weapon.hpp"
 #include "Armor.hpp"
@@ -26,8 +27,8 @@ class Player {
         int Defence;
         int Parry;
 
-        const int HEAD_CHANCE = 15;
-        const int BODY_CHANCE = 75;
+        const static int HEAD_CHANCE = 15;
+        const static int BODY_CHANCE = 75;
 
         //set stats
         virtual void set_stats() = 0;
@@ -219,7 +220,9 @@ void Player::parryAttack(std::string state){
 class Hero : public Player {
         int Stamina;
         std::string type;
-        
+
+        std::vector<int> potions = {0, 0};
+        int small_hp, big_hp;
     public:
         //operator<<
         friend std::ostream &operator<<(std::ostream &os, const Hero &p);
@@ -227,12 +230,18 @@ class Hero : public Player {
         //operator>> and initializer list
         friend std::istream &operator>>(std::istream &is, Hero &p);
 
-        //Stamina getter and setter
+        //getters and setters
         int getStamina(){
             return this->Stamina;
         }
         void setStamina(int Stamina){
             this->Stamina = Stamina;
+        }
+        int getSmallHP(){
+            return this->small_hp;
+        }
+        int getBigHP(){
+            return this->big_hp;
         }
 
         //Stamina increase/decrease functions
@@ -243,33 +252,41 @@ class Hero : public Player {
             this->Stamina -= 10;
         }
         void set_stats();
+
+        //healing functions
+        void give_potion(std::string potion_type);
+        int heal(std::string potion_type, int value);
+
 };
 
 //set stats based on type input
 void Hero::set_stats(){
-    if(type == "Basic"){
+    if(type == "Basic" || type == "basic"){
         HP = 100;
         Stamina = 30;
         Defence = 50;
         Parry = 15;
+
+        small_hp = 25;
+        big_hp = 50;
     }
-    if(type == "Light"){
+    if(type == "Light" || type == "light"){
         HP = 50;
         Stamina = 60;
         Defence = 35;
         Parry = 30;
+
+        small_hp = 50 / 4;
+        big_hp = 25;
     }
-    if(type == "Heavy"){
+    if(type == "Heavy" || type == "heavy"){
         HP = 200;
         Stamina = 10;
         Defence = 65;
         Parry = 5;
-    }
-    if(type == "debug"){
-        HP = 20000;
-        Stamina = 20000;
-        Defence = 100;
-        Parry = 0;
+
+        small_hp = 50;
+        big_hp = 100;
     }
 }
 
@@ -307,9 +324,44 @@ std::ostream &operator<<(std::ostream &os, const Hero &h){
     <<"Parry: " <<h.Parry <<std::endl
     <<h.weapon <<std::endl
     <<std::endl <<"Armor:" <<std::endl
-    <<h.armor;
+    <<h.armor <<std::endl
+    <<"Potions:" <<std::endl
+    <<"Small potions: " <<h.potions[0] <<std::endl
+    <<"Big potions: " <<h.potions[1] <<std::endl;
 
     return os;
+}
+
+//healing functions
+void Hero::give_potion(std::string potion_type){
+    if(potion_type == "small_hp")
+        potions[0]++;
+    if(potion_type == "big_hp")
+        potions[1]++;
+}
+
+int Hero::heal(std::string potion_type, int value){
+    if(potion_type == "small_hp"){
+        //returns healed value if hero is healed successfully,
+        //0 if we ran out of potions of this type
+        if(potions[0] != 0){
+            HP += value;
+            potions[0]--;
+            return value;
+        }
+        else
+            return 0;
+    }
+    if(potion_type == "big_hp"){
+        if(potions[1] != 0){
+            HP += value;
+            potions[1]--;
+            return value;
+        }
+        else
+            return 0;
+    }
+    return 0;
 }
 
 
