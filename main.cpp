@@ -120,15 +120,17 @@ int game(Hero &hero, Enemy &enemy, std::ostream &fout){
                 }
                 int potion_result = choose_potion(hero, max_hp);
                 if(potion_result == 0)
-                    std::cout <<"You don't have potions of that type!" <<std::endl;
+                    std::cout <<"------------------------" <<std::endl 
+                    <<"You don't have potions of that type!" <<std::endl;
                 else
-                    std::cout <<"You healed yourself for " <<potion_result <<"!" <<std::endl;
+                    std::cout <<"------------------------" <<std::endl
+                    <<"You healed yourself for " <<potion_result <<"!" <<std::endl;
                 break;
         }
     }
 }
 
-int start(Hero &hero, std::stack<std::unique_ptr<Enemy>> &enemy_stack, std::ostream &fout){
+int start(Hero &hero, std::stack< std::unique_ptr<Enemy> > &enemy_stack, std::ostream &fout){
     int opt, result, init_stamina;
     init_stamina = hero.getStamina();
 
@@ -183,7 +185,7 @@ int main(){
     srand(time(NULL));
 
     //enemies to fight
-    std::stack<std::unique_ptr<Enemy>> enemy_stack;
+    std::stack< std::unique_ptr<Enemy> > enemy_stack;
     enemy_stack.push(std::make_unique<Enemy>("Brutus"));
     enemy_stack.push(std::make_unique<Enemy>("Leroy"));
     

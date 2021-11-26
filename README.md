@@ -4,26 +4,29 @@
 
 **Randomizer!** is a text-based RPG written in C++.
 
-The goal of the game is to **slay the enemy**, or **be slayed yourself**!
+The goal of the game is to **kill the enemies**, or **be killed yourself**!
 
 ## **Features**
 
 ### ***Version 0.1***
 
-<ul>
-    <li>Choose a name for your hero...</li>
-    <li>...and a starting type</li>
-    <li>The game gives you a set of <strong>armor</strong> (split into Head, Body and Legs) and a <strong>weapon</strong>, with random stats</li>
-    <li>The starting type sets the base stats: </li>
-    <ul>
-        <li><strong>Health Points (HP)</strong></li>
-        <li><strong>Stamina</strong> - dictates how many times you can attack the enemy consecutively, before being forced to parry</li>
-        <li><strong>Defence</strong> - splits any incoming attack as follows:</li>
-            <ul>
-                <li>Most of the damage gets absorbed by a piece of armor</li>
-                <li>The rest goest directly to your HP</li>
-            </ul>
-        <li><strong>Parry</strong> - adds a small buff to your defence when you're parrying an attack</li>
-    </ul>
-    <li>You can either attack the enemy, or parry his attack.</li>
-</ul>
+- Choose a name for your hero...
+- ...and a starting type
+- The game gives you a set of **armor** (split into Head, Body and Legs) and a **weapon**, with random stats
+- The starting type sets the base stats:
+    - **Health Points (HP)**
+    - **Stamina** - dictates how many times you can attack the enemy consecutively, before being forced to parry
+    - **Defence** - splits any incoming attack as follows:
+        - Most of the damage gets absorbed by a piece of armor
+        - The rest goes directly to your HP
+    - **Parry** - adds a small buff to your defence when you're parrying an attack
+- You can either attack the enemy, or parry his attack.
+
+### ***Version 0.2***
+
+- You can now fight multiple enemies!
+- You can also heal yourself using either:
+  - A **small potion** that heals 1/4 of your base HP
+  - A **big potion** that heals 1/2 of your base HP
+- You are rewarded with a potion every 4 successful attacks on an enemy
+- The **big potion** is rarer than the **small potion**
