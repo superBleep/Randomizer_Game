@@ -1,10 +1,16 @@
 #include "Player.hpp"
+#include "Player.cpp"
+#include "Hero.hpp"
+#include "Hero.cpp"
+#include "Enemy.hpp"
+#include "Enemy.cpp"
+
 #include <memory>
 #include <stack>
 
 int choose_potion(Hero &hero, int max_hp){
     int opt;
-    std::cout <<"Cosnume a SMALL potion (1) or a BIG potion (2)?" <<std::endl
+    std::cout <<"Consume a SMALL potion (1) or a BIG potion (2)?" <<std::endl
     <<"> ";
 
     std::cin >>opt;
@@ -199,7 +205,7 @@ int main(){
         std::cout <<"heroTypeException caught: " <<e.what() <<std::endl;
         return 0;
     }
-    
+
     //open file for logging
     std::ofstream fout;
     fout.open("game_logs.out");
