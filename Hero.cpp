@@ -1,6 +1,3 @@
-#ifndef HERO_CPP
-#define HERO_CPP
-
 #include "Hero.hpp"
 
 //set stats based on type input
@@ -107,5 +104,3 @@ int Hero::heal(std::string potion_type, int value){
     }
     return 0;
 }
-
-#endif

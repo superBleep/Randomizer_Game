@@ -1,6 +1,3 @@
-#ifndef ENEMY_CPP
-#define ENEMY_CPP
-
 #include "Enemy.hpp"
 
 //constructor
@@ -28,5 +25,3 @@ std::ostream &operator<<(std::ostream &os, const Enemy &e){
 
     return os;
 }
-
-#endif

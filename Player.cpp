@@ -1,6 +1,3 @@
-#ifndef PLAYER_CPP
-#define PLAYER_CPP
-
 #include "Player.hpp"
 
 //copy constructor
@@ -149,5 +146,3 @@ void Player::parryAttack(std::string state){
     if(state == "debuff")
         Defence -= Defence * Parry / 100;
 }
-
-#endif

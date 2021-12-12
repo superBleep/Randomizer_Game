@@ -1,9 +1,6 @@
 #include "Player.hpp"
-#include "Player.cpp"
 #include "Hero.hpp"
-#include "Hero.cpp"
 #include "Enemy.hpp"
-#include "Enemy.cpp"
 
 #include <memory>
 #include <stack>
@@ -192,8 +189,8 @@ int main(){
 
     //enemies to fight
     std::stack< std::unique_ptr<Enemy> > enemy_stack;
-    enemy_stack.push(std::make_unique<Enemy>("Brutus"));
-    enemy_stack.push(std::make_unique<Enemy>("Leroy"));
+    enemy_stack.emplace(std::make_unique<Enemy>("Brutus"));
+    enemy_stack.emplace(std::make_unique<Enemy>("Leroy"));
     
     //read hero data
     Hero hero;
