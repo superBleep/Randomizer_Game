@@ -188,8 +188,8 @@ int main(){
 
     //enemies declaration
     std::stack< std::unique_ptr<Enemy> > enemy_stack;
-    enemy_stack.emplace(std::unique_ptr<Enemy>(new Enemy("Brutus")));
-    enemy_stack.emplace(std::unique_ptr<Enemy>(new Enemy("Leroy")));
+    enemy_stack.push(std::unique_ptr<Enemy>(new Enemy("Brutus")));
+    enemy_stack.push(std::unique_ptr<Enemy>(new Enemy("Leroy")));
 
     //hero declaration
     Hero hero;
