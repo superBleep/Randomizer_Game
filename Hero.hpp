@@ -1,6 +1,8 @@
 #ifndef HERO_HPP
 #define HERO_HPP
 
+#include <array>
+
 #include "Player.hpp"
 #include "exceptions.hpp"
 
