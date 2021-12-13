@@ -1,8 +1,7 @@
 #include "Player.hpp"
 #include "Hero.hpp"
+#include "Sub_Hero.hpp"
 #include "Enemy.hpp"
-
-#include <memory>
 #include <stack>
 
 int choose_potion(Hero &hero, int max_hp){
@@ -187,22 +186,41 @@ int main(){
     //time seed for random number generator
     srand(time(NULL));
 
-    //enemies to fight
+    //enemies declaration
     std::stack< std::unique_ptr<Enemy> > enemy_stack;
-    enemy_stack.emplace(std::make_unique<Enemy>("Brutus"));
-    enemy_stack.emplace(std::make_unique<Enemy>("Leroy"));
-    
-    //read hero data
+    enemy_stack.emplace(std::unique_ptr<Enemy>(new Enemy("Brutus")));
+    enemy_stack.emplace(std::unique_ptr<Enemy>(new Enemy("Leroy")));
+
+    //hero declaration
     Hero hero;
     
-    //check hero for errors
+    //check hero for errors after constructing
     try {
         std::cin >>hero;
-    }catch(heroTypeException &e){
-        std::cout <<"heroTypeException caught: " <<e.what() <<std::endl;
+    }catch(TypeException &e){
+        std::cout <<"heroException caught: " <<e.what() <<std::endl;
         return 0;
     }
-
+    
+    //check hero for errors after assigning a subclass
+    try {
+        if(hero.getType() == "Basic" || hero.getType() == "basic"){
+            basicHero subhero(hero.getName(), hero.getType());
+            hero = subhero;
+        }
+        if(hero.getType() == "Light" || hero.getType() == "light"){
+            lightHero subhero(hero.getName(), hero.getType());
+            hero = subhero;
+        }
+        if(hero.getType() == "Heavy" || hero.getType() == "heavy"){
+            heavyHero subhero(hero.getName(), hero.getType());
+            hero = subhero;
+        }
+    }catch(StatsException &e){
+        std::cout <<"heroException caught: " <<e.what() <<std::endl;
+        return 0;
+    }
+    
     //open file for logging
     std::ofstream fout;
     fout.open("game_logs.out");

@@ -6,17 +6,41 @@
 
 ///HERO (PLAYER SUBCLASS)
 class Hero : public Player {
+    protected:
         int Stamina;
         std::string type;
 
-        int potions[2] = {0, 0};
+        std::array<int, 2> potions = { {0, 0} };
         int small_hp, big_hp;
     public:
+        //constructor w/ default values for exceptions
+        Hero(int Stamina = -1) : Stamina(Stamina) {}
+
+        //operator>> and initializer list
+        friend std::istream &operator>>(std::istream &is, Hero &);
+
         //operator<<
         friend std::ostream &operator<<(std::ostream &os, const Hero &p);
 
-        //operator>> and initializer list
-        friend std::istream &operator>>(std::istream &is, Hero &p);
+        //assignment operator
+        Hero &operator=(const Hero &h){
+            this->weapon = h.weapon;
+            this->armor = h.armor;
+            this->name = h.name;
+            this->type = h.type;
+
+            this->HP = h.HP;
+            this->Defence = h.Defence;
+            this->Parry = h.Parry;
+            
+            this->Stamina = h.Stamina;
+            for(unsigned int i = 0; i < potions.size(); i++)
+                this->potions[i] = h.potions[i];
+            this->small_hp = h.small_hp;
+            this->big_hp = h.big_hp;
+
+            return *this;
+        }
 
         //getters and setters
         int getStamina(){
@@ -31,6 +55,9 @@ class Hero : public Player {
         int getBigHP(){
             return this->big_hp;
         }
+        std::string getType(){
+            return this->type;
+        }
 
         //Stamina increase/decrease functions
         void increaseStamina(){
@@ -39,7 +66,9 @@ class Hero : public Player {
         void decreaseStamina(){
             this->Stamina -= 10;
         }
-        void set_stats();
+        
+        //stat-setting function (empty, waiting to be implemented in subclass)
+        virtual void set_stats() {};
 
         //healing functions
         void give_potion(std::string potion_type);

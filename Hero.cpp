@@ -1,35 +1,5 @@
 #include "Hero.hpp"
-
-//set stats based on type input
-void Hero::set_stats(){
-    if(type == "Basic" || type == "basic"){
-        HP = 100;
-        Stamina = 30;
-        Defence = 50;
-        Parry = 15;
-
-        small_hp = 25;
-        big_hp = 50;
-    }
-    if(type == "Light" || type == "light"){
-        HP = 50;
-        Stamina = 60;
-        Defence = 35;
-        Parry = 30;
-
-        small_hp = 50 / 4;
-        big_hp = 25;
-    }
-    if(type == "Heavy" || type == "heavy"){
-        HP = 200;
-        Stamina = 10;
-        Defence = 65;
-        Parry = 5;
-
-        small_hp = 50;
-        big_hp = 100;
-    }
-}
+#include "Sub_Hero.hpp"
 
 //operator>> and initializer list
 std::istream &operator>>(std::istream &is, Hero &h){
@@ -46,11 +16,11 @@ std::istream &operator>>(std::istream &is, Hero &h){
     std::cout <<"> ";
 
     is >>h.type;
+
+    //throw exception if wrong type is given
     if(h.type != "Basic" && h.type != "basic" && h.type != "Light" 
     && h.type != "light" && h.type != "Heavy" && h.type != "heavy")
-        throw heroTypeException();
-
-    h.set_stats();
+        throw TypeException();
 
     return is;
 }

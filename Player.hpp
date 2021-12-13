@@ -5,9 +5,11 @@
 #include <fstream>
 #include <ctime>
 #include <cstdlib>
+#include <memory>
 
 #include "Weapon.hpp"
 #include "Armor.hpp"
+#include "exceptions.hpp"
 
 ///PLAYER (ABSTRACT CLASS)
 class Player {
@@ -24,6 +26,7 @@ class Player {
         Weapon weapon;
         Armor armor;
         std::string name;
+        
         int HP;
         int Defence;
         int Parry;
@@ -34,20 +37,22 @@ class Player {
         //set stats
         virtual void set_stats() = 0;
     public:
-        //default constructor
-        Player() {}
-
+        //constructor w/ default values for exceptions
+        Player(int HP = -1, int Defence = -1, int Parry = -1) : HP(HP), Defence(Defence), Parry(Parry) {}
+        
         //copy constructor
         Player(const Player &p);
 
-        ///asingment operator
-        Player &operator=(const Player &p){
+        ///assingment operator
+        virtual Player &operator=(const Player &p){
             this->weapon = p.weapon;
+            this->armor = p.armor;
             this->name = p.name;
 
             this->HP = p.HP;
             this->Defence = p.Defence;
-            
+            this->Parry = p.Parry;
+
             return *this;
         }
 
@@ -61,7 +66,7 @@ class Player {
         int getHP(){
             return this->HP;
         }
-        
+
         //attack function
         void attackEnemy(Player &enemy, std::ostream &fout);
 

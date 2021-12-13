@@ -2,7 +2,7 @@ project(Randomizer_Game)
 
 cmake_minimum_required(VERSION 3.21)
 
-add_executable(${PROJECT_NAME} Player.cpp Hero.cpp Enemy.cpp main.cpp)
+add_executable(${PROJECT_NAME} Player.cpp Hero.cpp Enemy.cpp Sub_Hero.cpp main.cpp)
 
 set(CMAKE_CXX_STANDARD 17)
 

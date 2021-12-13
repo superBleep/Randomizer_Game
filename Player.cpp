@@ -6,6 +6,7 @@ Player::Player(const Player &p){
     this->name = p.name;
     HP = p.HP;
     Defence = p.Defence;
+    Parry = p.Parry;
 }
 
 //attack head function
