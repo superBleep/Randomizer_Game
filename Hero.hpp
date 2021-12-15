@@ -14,9 +14,10 @@ class Hero : public Player {
 
         std::array<int, 2> potions = { {0, 0} };
         int small_hp, big_hp;
+        int max_hp;
     public:
         //constructor w/ default values for exceptions
-        Hero(int Stamina = -1) : Stamina(Stamina) {}
+        Hero(int Stamina = -1, int small_hp = -1, int big_hp = -1, int max_hp = -1) : Stamina(Stamina), small_hp(small_hp), big_hp(big_hp), max_hp(max_hp) {}
 
         //operator>> and initializer list
         friend std::istream &operator>>(std::istream &is, Hero &);
@@ -40,6 +41,7 @@ class Hero : public Player {
                 this->potions[i] = h.potions[i];
             this->small_hp = h.small_hp;
             this->big_hp = h.big_hp;
+            this->max_hp = h.max_hp;
 
             return *this;
         }
@@ -56,6 +58,9 @@ class Hero : public Player {
         }
         int getBigHP(){
             return this->big_hp;
+        }
+        int getMaxHP(){
+            return this->max_hp;
         }
         std::string getType(){
             return this->type;
@@ -74,7 +79,7 @@ class Hero : public Player {
 
         //healing functions
         void give_potion(std::string potion_type);
-        int heal(std::string potion_type, int value);
+        int heal(int potion_type);
 
 };
 

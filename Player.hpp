@@ -5,7 +5,6 @@
 #include <fstream>
 #include <ctime>
 #include <cstdlib>
-#include <memory>
 
 #include "Weapon.hpp"
 #include "Armor.hpp"

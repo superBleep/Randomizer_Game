@@ -3,40 +3,14 @@
 #include "Sub_Hero.hpp"
 #include "Enemy.hpp"
 #include <stack>
-
-int choose_potion(Hero &hero, int max_hp){
-    int opt;
-    std::cout <<"Consume a SMALL potion (1) or a BIG potion (2)?" <<std::endl
-    <<"> ";
-
-    std::cin >>opt;
-
-    switch(opt){
-        case(1):
-            if(hero.getHP() + hero.getSmallHP() <= max_hp)
-                return hero.heal("small_hp", hero.getSmallHP());
-            //if potion overheals hero, heal until health is full
-            else
-                return hero.heal("small_hp", max_hp - hero.getHP());
-            break;
-        case(2):
-            if(hero.getHP() + hero.getBigHP() <= max_hp)
-                return hero.heal("big_hp", hero.getBigHP());
-            else
-                return hero.heal("big_hp", max_hp - hero.getHP());
-            break;
-    }
-
-    return 0;
-}
+#include <memory>
 
 int game(Hero &hero, Enemy &enemy, std::ostream &fout){
-    int opt, hit_counter = 0, chance;
+    int opt, hit_counter = 0, chance, pot;
     const static int POTION_REWARD = 4; //how many attacks before the hero is given a potion
     const static int POTION_CHANCE = 70; //chance to give the hero either a small or a big potion
 
     const static int max_st = hero.getStamina();
-    const static int max_hp = hero.getHP();
 
     while(1){
         std::cout <<"------------------------" <<std::endl
@@ -51,8 +25,6 @@ int game(Hero &hero, Enemy &enemy, std::ostream &fout){
         std::cin >>opt;
 
         std::cout <<"------------------------" <<std::endl;
-
-        
 
         switch(opt) {
             case(1):
@@ -115,18 +87,25 @@ int game(Hero &hero, Enemy &enemy, std::ostream &fout){
                     return 0;
                 break;
             case(5):
-                //can't heal if HP is maxed out
-                if(hero.getHP() == max_hp){
-                    std::cout <<"HP is maxed out!" <<std::endl;
-                    break;
+                std::cout <<"Consume a SMALL potion (1) or a BIG potion (2)?" <<std::endl
+                <<"> ";
+
+                std::cin >>pot;
+                
+                int potion_result = hero.heal(pot);
+                if(potion_result == -1){
+                    std::cout <<"------------------------" <<std::endl 
+                    <<"Can't heal, HP is maxed out!" <<std::endl;
                 }
-                int potion_result = choose_potion(hero, max_hp);
-                if(potion_result == 0)
+                else if(potion_result == -2){
                     std::cout <<"------------------------" <<std::endl 
                     <<"You don't have potions of that type!" <<std::endl;
-                else
+                }
+                else{
                     std::cout <<"------------------------" <<std::endl
                     <<"You healed yourself for " <<potion_result <<"!" <<std::endl;
+                }
+
                 break;
         }
     }
@@ -188,8 +167,8 @@ int main(){
 
     //enemies declaration
     std::stack< std::unique_ptr<Enemy> > enemy_stack;
-    enemy_stack.push(std::unique_ptr<Enemy>(new Enemy("Brutus")));
-    enemy_stack.push(std::unique_ptr<Enemy>(new Enemy("Leroy")));
+    enemy_stack.push(std::make_unique<Enemy>("Brutus"));
+    enemy_stack.push(std::make_unique<Enemy>("Enemy"));
 
     //hero declaration
     Hero hero;
