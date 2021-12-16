@@ -1,3 +1,6 @@
+#ifndef WEAPON_HPP
+#define WEAPON_HPP
+
 class Weapon
 {
         int dmg;
@@ -34,3 +37,5 @@ class Weapon
             return os;
         }
 };
+
+#endif

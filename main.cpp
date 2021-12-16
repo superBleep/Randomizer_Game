@@ -168,7 +168,7 @@ int main(){
     //enemies declaration
     std::stack< std::unique_ptr<Enemy> > enemy_stack;
     enemy_stack.push(std::make_unique<Enemy>("Brutus"));
-    enemy_stack.push(std::make_unique<Enemy>("Enemy"));
+    enemy_stack.push(std::make_unique<Enemy>("Leroy"));
 
     //hero declaration
     Hero hero;

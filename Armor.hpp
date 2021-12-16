@@ -1,3 +1,6 @@
+#ifndef ARMOR_HPP
+#define ARMOR_HPP
+
 class Armor
 {
         int head;
@@ -61,3 +64,5 @@ class Armor
             return os;
         }
 };
+
+#endif
