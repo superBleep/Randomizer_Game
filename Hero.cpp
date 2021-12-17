@@ -1,13 +1,13 @@
 #include "Hero.hpp"
 #include "Sub_Hero.hpp"
 
-//operator>> and initializer list
-std::istream &operator>>(std::istream &is, Hero &h){
+//input function
+void Hero::input(std::istream &is){
     std::cout <<"##### Randomizer! #####" <<std::endl;
     std::cout <<"Choose a NAME for your hero:" <<std::endl;
     std::cout <<"> ";
 
-    is >>h.name;
+    is >>name;
 
     std::cout <<std::endl <<"Choose a TYPE for your hero:" <<std::endl;
     std::cout <<"Basic -> Base Stats: HP = 100 Stamina = 30 Defence = 50 Parry = 15" <<std::endl;
@@ -15,12 +15,34 @@ std::istream &operator>>(std::istream &is, Hero &h){
     std::cout <<"Heavy -> Base Stats: HP = 200 Stamina = 10 Defence = 65 Parry = 5" <<std::endl;
     std::cout <<"> ";
 
-    is >>h.type;
+    is >>type;
 
     //throw exception if wrong type is given
-    if(h.type != "Basic" && h.type != "basic" && h.type != "Light" 
-    && h.type != "light" && h.type != "Heavy" && h.type != "heavy")
+    if(type != "Basic" && type != "basic" && type != "Light" 
+    && type != "light" && type != "Heavy" && type != "heavy")
         throw TypeException();
+}
+
+//function used to create hero object based on input
+std::shared_ptr<Hero> Hero::create() {
+    std::shared_ptr<Hero> e;
+    e = std::make_shared<Hero>("name", "type");
+    std::cin >> *e;
+
+    if(e->type == "basic" || e->type == "Basic")
+        e = std::make_shared<basicHero>(e->name, e->type);
+    if(e->type == "light" || e->type == "Light")
+        e = std::make_shared<lightHero>(e->name, e->type);
+    if(e->type == "heavy" || e->type == "Heavy")
+        e = std::make_shared<heavyHero>(e->name, e->type);
+
+    e->set_stats();
+    return e;
+}
+
+//operator>> and initializer list
+std::istream &operator>>(std::istream &is, Hero &h){
+    h.input(is);
 
     return is;
 }

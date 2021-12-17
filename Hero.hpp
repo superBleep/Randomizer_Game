@@ -2,6 +2,7 @@
 #define HERO_HPP
 
 #include <array>
+#include <memory>
 
 #include "Player.hpp"
 #include "exceptions.hpp"
@@ -15,12 +16,24 @@ class Hero : public Player {
         std::array<int, 2> potions = { {0, 0} };
         int small_hp, big_hp;
         int max_hp;
+
+        //input function used to read basic hero data (name and type)
+        void input(std::istream &is);
     public:
+        //function to create a smart pointer object
+        static std::shared_ptr<Hero> create();
+
         //constructor w/ default values for exceptions
-        Hero(int Stamina = -1, int small_hp = -1, int big_hp = -1, int max_hp = -1) : Stamina(Stamina), small_hp(small_hp), big_hp(big_hp), max_hp(max_hp) {}
+        Hero(std::string name, std::string type) : type(type) {
+            this->name = name;
+            Stamina = -1;
+            small_hp = -1;
+            big_hp = -1;
+            max_hp = -1;
+        }
 
         //operator>> and initializer list
-        friend std::istream &operator>>(std::istream &is, Hero &);
+        friend std::istream &operator>>(std::istream &is, Hero &h);
 
         //operator<<
         friend std::ostream &operator<<(std::ostream &os, const Hero &p);
@@ -81,6 +94,8 @@ class Hero : public Player {
         void give_potion(std::string potion_type);
         int heal(int potion_type);
 
+        //function to show hero type
+        virtual void show_type() {};
 };
 
 #endif

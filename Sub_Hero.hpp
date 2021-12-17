@@ -4,21 +4,27 @@
 #include "Hero.hpp"
 
 class basicHero : public Hero {
+    private:
+        void set_stats() override;
+        void show_type() override;
     public:
         basicHero(std::string name, std::string type);
-        void set_stats();
 };
 
 class lightHero : public Hero {
+    private:
+        void set_stats() override;
+        void show_type() override;
     public:
         lightHero(std::string name, std::string type);
-        void set_stats();
 };
 
 class heavyHero : public Hero {
+    private:
+        void set_stats() override;
+        void show_type() override;
     public:
         heavyHero(std::string name, std::string type);
-        void set_stats();
 };
 
 #endif

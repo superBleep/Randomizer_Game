@@ -3,7 +3,6 @@
 #include "Sub_Hero.hpp"
 #include "Enemy.hpp"
 #include <stack>
-#include <memory>
 
 int game(Hero &hero, Enemy &enemy, std::ostream &fout){
     int opt, hit_counter = 0, chance, pot;
@@ -171,30 +170,15 @@ int main(){
     enemy_stack.push(std::make_unique<Enemy>("Leroy"));
 
     //hero declaration
-    Hero hero;
-    
-    //check hero for errors after constructing
+    std::shared_ptr<Hero> hero;
+
+    //check hero for errors after creation
     try {
-        std::cin >>hero;
+        hero = Hero::create();
+        hero->show_type();
     }catch(TypeException &e){
         std::cout <<"heroException caught: " <<e.what() <<std::endl;
         return 0;
-    }
-    
-    //check hero for errors after assigning a subclass
-    try {
-        if(hero.getType() == "Basic" || hero.getType() == "basic"){
-            basicHero subhero(hero.getName(), hero.getType());
-            hero = subhero;
-        }
-        if(hero.getType() == "Light" || hero.getType() == "light"){
-            lightHero subhero(hero.getName(), hero.getType());
-            hero = subhero;
-        }
-        if(hero.getType() == "Heavy" || hero.getType() == "heavy"){
-            heavyHero subhero(hero.getName(), hero.getType());
-            hero = subhero;
-        }
     }catch(StatsException &e){
         std::cout <<"heroException caught: " <<e.what() <<std::endl;
         return 0;
@@ -205,7 +189,7 @@ int main(){
     fout.open("game_logs.out");
 
     //main menu
-    start(hero, enemy_stack, fout);
+    start(*hero, enemy_stack, fout);
 
     //close logging
     fout.close();
