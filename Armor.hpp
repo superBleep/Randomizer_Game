@@ -1,14 +1,15 @@
 #ifndef ARMOR_HPP
 #define ARMOR_HPP
 
+template <int Min_Ap = 20, int Max_Ap = 100>
 class Armor
 {
         int head;
         int body;
         int legs;
 
-        const static int MIN_AP = 20;
-        const static int MAX_AP = 100;
+        const static int MIN_AP = Min_Ap;
+        const static int MAX_AP = Max_Ap;
     public:
         //constructor and initializer list
         Armor(){
@@ -18,14 +19,14 @@ class Armor
         }
 
         //copy constructor
-        Armor(const Armor &a){
+        Armor(const Armor<Min_Ap, Max_Ap> &a){
             head = a.head;
             body = a.body;
             legs = a.legs;
         }
 
         //asingment operator
-        Armor &operator=(const Armor &a){
+        Armor &operator=(const Armor<Min_Ap, Max_Ap> &a){
             head = a.head;
             body = a.body;
             legs = a.legs;
@@ -56,10 +57,10 @@ class Armor
         }
 
         //operator<<
-        friend std::ostream &operator<<(std::ostream &os, const Armor& w){
-            os <<"Head: " <<w.head <<std::endl
-            <<"Body: " <<w.body <<std::endl
-            <<"Legs: " <<w.legs <<std::endl;
+        friend std::ostream &operator<<(std::ostream &os, const Armor<Min_Ap, Max_Ap>& a){
+            os <<"Head: " <<a.head <<std::endl
+            <<"Body: " <<a.body <<std::endl
+            <<"Legs: " <<a.legs <<std::endl;
 
             return os;
         }

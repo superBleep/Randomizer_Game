@@ -3,8 +3,9 @@
 
 #include <iostream>
 #include <fstream>
-#include <ctime>
 #include <cstdlib>
+#include <ctime>
+#include <memory>
 
 #include "Weapon.hpp"
 #include "Armor.hpp"
@@ -22,8 +23,9 @@ class Player {
         //attack legs function
         void attackEnemyLegs(Player &enemy, int formula, std::ostream &fout);
     protected:
-        Weapon weapon;
-        Armor armor;
+        Weapon<> weapon;
+        Armor<> armor;
+        
         std::string name;
         
         int HP;
@@ -38,6 +40,10 @@ class Player {
     public:
         //constructor w/ default values for exceptions
         Player(int HP = -1, int Defence = -1, int Parry = -1) : HP(HP), Defence(Defence), Parry(Parry) {}
+
+        Player(std::string name){
+            this->name = name;
+        }
         
         //copy constructor
         Player(const Player &p);

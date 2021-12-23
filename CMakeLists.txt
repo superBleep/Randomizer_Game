@@ -14,4 +14,4 @@ else()
     endif()
 endif()
 
-add_executable(${PROJECT_NAME} Player.cpp Hero.cpp Enemy.cpp Sub_Hero.cpp main.cpp)
+add_executable(${PROJECT_NAME} Player.cpp Hero.cpp Sub_Hero.cpp Enemy.cpp Boss.cpp Sub_Boss.cpp main.cpp)
