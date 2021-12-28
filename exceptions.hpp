@@ -10,13 +10,6 @@ class TypeException : public std::exception {
         }
 };
 
-class TypenameException : public std::exception {
-    public:
-        const char* what () {
-            return "bad typename given";
-        }
-};
-
 class StatsException : public std::exception {
     public:
         const char* what () {

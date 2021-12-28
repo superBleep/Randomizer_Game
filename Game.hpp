@@ -1,6 +1,9 @@
 #ifndef GAME_HPP
 #define GAME_HPP
 
+#include "Hero.hpp"
+#include "Boss.hpp"
+#include "Sub_Boss.hpp"
 #include <ctime>
 #include <type_traits>
 

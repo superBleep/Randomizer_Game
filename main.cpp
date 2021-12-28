@@ -1,14 +1,13 @@
 #include "Player.hpp"
-#include "Hero.hpp"
 #include "Sub_Hero.hpp"
 #include "Enemy.hpp"
-#include "Boss.hpp"
 #include "Sub_Boss.hpp"
 #include "Game.hpp"
 #include <stack>
 
-int start(Hero &hero, std::stack< std::unique_ptr<Enemy> > &enemy_stack, Boss &boss, std::ostream &fout){
-    int opt, result, init_stamina;
+template <typename T>
+int start(Hero &hero, std::stack< std::unique_ptr<Enemy> > &enemy_stack, T &boss, std::ostream &fout){
+    int opt, result, init_stamina, boss_flag = 0;
     init_stamina = hero.getStamina();
 
     while(1){
@@ -50,18 +49,25 @@ int start(Hero &hero, std::stack< std::unique_ptr<Enemy> > &enemy_stack, Boss &b
                 }
                 break;
             case(3):
-                result = game<Boss>(hero, boss, fout);
-                if(result == 0){
-                    std::cout <<std::endl <<"You were killed. Game over!" <<std::endl;
-                    return 1;
-                }
-                else{
-                    std::cout <<"------------------------";
-                    std::cout <<std::endl <<"You killed " <<boss.getName() <<std::endl;
+                if(boss_flag == 0) {
+                    result = game<decltype(boss)>(hero, boss, fout);
+                    if(result == 0){
+                        std::cout <<std::endl <<"You were killed. Game over!" <<std::endl;
+                        return 1;
+                    }
+                    else{
+                        std::cout <<"------------------------";
+                        std::cout <<std::endl <<"You killed " <<boss.getName() <<std::endl;
 
-                    hero.setStamina(init_stamina);
+                        boss_flag = 1;
+                        hero.setStamina(init_stamina);
+                    }
+                    break;
                 }
-                break;
+                else {
+                    std::cout <<"You already defeated the boss!" <<std::endl;
+                    break;
+                }
             case(4):
                 std::cout <<"You quit the game. :(" <<std::endl;
 
@@ -70,6 +76,8 @@ int start(Hero &hero, std::stack< std::unique_ptr<Enemy> > &enemy_stack, Boss &b
         }
     }
 }
+
+template <> int start(Hero &hero, std::stack< std::unique_ptr<Enemy> > &enemy_stack, easyBoss &boss, std::ostream &fout);
 
 int main(){
     //time seed for random number generator
@@ -114,12 +122,7 @@ int main(){
     fout.open("game_logs.out");
 
     //main menu
-    try{
-        start(*hero, enemy_stack, *boss, fout);
-    }catch(TypenameException &e){
-        std::cout <<"Exception caught: " <<e.what() <<std::endl;
-        return 0;
-    }
+    start<Boss>(*hero, enemy_stack, *boss, fout);
     
     //close logging
     fout.close();

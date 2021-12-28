@@ -1,6 +1,6 @@
-#include "Boss.hpp"
 #include "Sub_Boss.hpp"
 
+//input function
 void Boss::input(std::istream &is){
     std::cout <<std::endl
     <<"Choose the difficulty of the boss:" <<std::endl
@@ -16,6 +16,7 @@ void Boss::input(std::istream &is){
         throw TypeException();
 }
 
+//function to create a smart pointer object
 std::shared_ptr<Boss> Boss::create() {
     std::shared_ptr<Boss> b;
     b = std::make_shared<Boss>("name");
@@ -31,20 +32,26 @@ std::shared_ptr<Boss> Boss::create() {
     return b;
 }
 
+//input operator
 std::istream &operator>>(std::istream &is, Boss &b){
     b.input(is);
 
     return is;
 }
 
-std::ostream &operator<<(std::ostream &os, const Boss &b){
-    os <<"Name: " <<b.name <<std::endl
-    <<"HP: " <<b.HP <<std::endl
-    <<"Defence: " <<b.Defence <<std::endl
-    <<"Parry: " <<b.Parry <<std::endl
-    <<b.weapon <<std::endl
+//output function
+void Boss::output(std::ostream &os){
+    os <<"Name: " <<name <<std::endl
+    <<"HP: " <<HP <<std::endl
+    <<"Defence: " <<Defence <<std::endl
+    <<"Parry: " <<Parry <<std::endl
+    <<weapon <<std::endl
     <<std::endl <<"Armor:" <<std::endl
-    <<b.armor;
+    <<armor;
+}
 
+//output operator
+std::ostream &operator<<(std::ostream &os, Boss &b){
+    b.output(os);
     return os;
 }

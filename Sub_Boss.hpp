@@ -9,8 +9,14 @@ class easyBoss : public Boss {
         Armor<50, 50> armor;
 
         void set_stats() override;
+
+        void output(std::ostream &os) override;
     public:
         easyBoss(std::string name);
+
+        Armor<50, 50> getArmor(){
+            return armor;
+        }
 };
 
 class medBoss : public Boss {
@@ -19,8 +25,14 @@ class medBoss : public Boss {
         Armor<70, 70> armor;
 
         void set_stats() override;
+
+        void output(std::ostream &os) override;
     public:
         medBoss(std::string name);
+
+        Armor<70, 70> getArmor(){
+            return armor;
+        }
 };
 
 class hardBoss : public Boss {
@@ -29,8 +41,14 @@ class hardBoss : public Boss {
         Armor<100, 100> armor;
 
         void set_stats() override;
+
+        void output(std::ostream &os) override;
     public:
         hardBoss(std::string name);
+
+        Armor<100, 100> getArmor() {
+            return armor;
+        }
 };
 
 #endif

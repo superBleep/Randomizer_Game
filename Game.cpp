@@ -1,4 +1,6 @@
 #include "Hero.hpp"
+#include "Enemy.hpp"
+#include "Boss.hpp"
 
 template <typename T>
 int game(Hero &hero, T &enemy, std::ostream &fout) {
@@ -15,10 +17,8 @@ int game(Hero &hero, T &enemy, std::ostream &fout) {
 
         if(std::is_same<T, Enemy>::value == true)
             std::cout <<"2) Check ENEMY STATS" <<std::endl;
-        else if(std::is_same<T, Boss>::value == true)
+        else
             std::cout <<"2) Check BOSS STATS" <<std::endl;
-        else 
-            throw TypenameException();
         
         std::cout <<"3) ATTACK "<<enemy.getName() <<std::endl
         <<"4) PARRY incoming attack" <<std::endl

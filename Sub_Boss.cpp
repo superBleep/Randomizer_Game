@@ -13,6 +13,16 @@ void easyBoss::set_stats(){
     Parry = 5;
 }
 
+void easyBoss::output(std::ostream &os){
+    os <<"Name: " <<name <<std::endl
+    <<"HP: " <<HP <<std::endl
+    <<"Defence: " <<Defence <<std::endl
+    <<"Parry: " <<Parry <<std::endl
+    <<weapon <<std::endl
+    <<std::endl <<"Armor:" <<std::endl
+    <<armor;
+}
+
 medBoss::medBoss(std::string name) : Boss("Average Bingus") {
     set_stats();
 
@@ -29,6 +39,16 @@ void medBoss::set_stats(){
         throw StatsException();
 }
 
+void medBoss::output(std::ostream &os){
+    os <<"Name: " <<name <<std::endl
+    <<"HP: " <<HP <<std::endl
+    <<"Defence: " <<Defence <<std::endl
+    <<"Parry: " <<Parry <<std::endl
+    <<weapon <<std::endl
+    <<std::endl <<"Armor:" <<std::endl
+    <<armor;
+}
+
 hardBoss::hardBoss(std::string name) : Boss("Huge Bingus") {
     set_stats();
 
@@ -43,4 +63,14 @@ void hardBoss::set_stats(){
 
     if(HP == -1 || Defence == -1 || Parry == -1 || name == "")
         throw StatsException();
+}
+
+void hardBoss::output(std::ostream &os){
+    os <<"Name: " <<name <<std::endl
+    <<"HP: " <<HP <<std::endl
+    <<"Defence: " <<Defence <<std::endl
+    <<"Parry: " <<Parry <<std::endl
+    <<weapon <<std::endl
+    <<std::endl <<"Armor:" <<std::endl
+    <<armor;
 }
