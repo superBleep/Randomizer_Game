@@ -5,8 +5,7 @@
 #include "Game.hpp"
 #include <stack>
 
-template <typename T>
-int start(Hero &hero, std::stack< std::unique_ptr<Enemy> > &enemy_stack, T &boss, std::ostream &fout){
+int start(Hero &hero, std::stack< std::unique_ptr<Enemy> > &enemy_stack, Boss &boss, std::ostream &fout){
     int opt, result, init_stamina, boss_flag = 0;
     init_stamina = hero.getStamina();
 
@@ -50,16 +49,32 @@ int start(Hero &hero, std::stack< std::unique_ptr<Enemy> > &enemy_stack, T &boss
                 break;
             case(3):
                 if(boss_flag == 0) {
-                    result = game<decltype(boss)>(hero, boss, fout);
+                    result = game<Boss>(hero, boss, fout);
                     if(result == 0){
                         std::cout <<std::endl <<"You were killed. Game over!" <<std::endl;
                         return 1;
                     }
                     else{
+                        boss_flag = 1;
+
                         std::cout <<"------------------------";
                         std::cout <<std::endl <<"You killed " <<boss.getName() <<std::endl;
+                        std::cout <<"As a reward for killing the boss, you are given: " <<std::endl;
 
-                        boss_flag = 1;
+                        if(boss.getName().find("Small") != std::string::npos) {
+                            hero.give_potion("small_hp");
+                            std::cout <<"One small potion!" <<std::endl;
+                        }
+                        if(boss.getName().find("Average") != std::string::npos) {
+                            hero.give_potion("big_hp");
+                            std::cout <<"One big potion!" <<std::endl;
+                        }
+                        if(boss.getName().find("Huge") != std::string::npos) {
+                            hero.give_potion("small_hp");
+                            hero.give_potion("big_hp");
+                            std::cout <<"One small potion and one big potion!" <<std::endl;
+                        }
+
                         hero.setStamina(init_stamina);
                     }
                     break;
@@ -76,8 +91,6 @@ int start(Hero &hero, std::stack< std::unique_ptr<Enemy> > &enemy_stack, T &boss
         }
     }
 }
-
-template <> int start(Hero &hero, std::stack< std::unique_ptr<Enemy> > &enemy_stack, easyBoss &boss, std::ostream &fout);
 
 int main(){
     //time seed for random number generator
@@ -122,7 +135,7 @@ int main(){
     fout.open("game_logs.out");
 
     //main menu
-    start<Boss>(*hero, enemy_stack, *boss, fout);
+    start(*hero, enemy_stack, *boss, fout);
     
     //close logging
     fout.close();

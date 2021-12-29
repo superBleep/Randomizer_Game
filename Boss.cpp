@@ -4,9 +4,9 @@
 void Boss::input(std::istream &is){
     std::cout <<std::endl
     <<"Choose the difficulty of the boss:" <<std::endl
-    <<"Easy -> Weapon damage = 15, Armor up to = 50" <<std::endl
-    <<"Medium -> Weapon damage = 30, Armor up to = 70" <<std::endl
-    <<"Hard -> Weapon damage = 50, Armor up to = 100" <<std::endl
+    <<"Easy -> HP = 50 Defence = 35 Parry = 5" <<std::endl
+    <<"Medium -> HP = 100 Defence = 50 Parry = 10" <<std::endl
+    <<"Hard -> HP = 150 Defence = 65 Parry = 15" <<std::endl
     <<"> ";
 
     is >>btype;

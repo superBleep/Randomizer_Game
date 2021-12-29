@@ -71,5 +71,5 @@ void heavyHero::set_stats() {
 
 void heavyHero::show_type(){
     std::cout <<"------------------------" <<std::endl
-    <<"Slow, yet built like a tank, " <<name <<" is a light hero!" <<std::endl;
+    <<"Slow, yet built like a tank, " <<name <<" is a heavy hero!" <<std::endl;
 }

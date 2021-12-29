@@ -19,6 +19,9 @@ class Hero : public Player {
 
         //input function used to read basic hero data (name and type)
         void input(std::istream &is);
+
+        //function to choose potion to be given
+        int potion_choice(int potion_type);
     public:
         //function to create a smart pointer object
         static std::shared_ptr<Hero> create();

@@ -30,3 +30,12 @@ The goal of the game is to **kill the enemies**, or **be killed yourself**!
   - A **big potion** that heals 1/2 of your base HP
 - You are rewarded with a potion every 4 successful attacks on an enemy
 - The **big potion** is rarer than the **small potion**
+
+### ***Version 0.3***
+
+- You now have the option to fight a **boss**
+  - Choose between three difficulties: **easy**, **medium** and **hard**
+  - Depending on which difficulty you chose, the boss drops:
+    - One **small potion** - *easy boss*
+    - One **big potion** - *medium boss*
+    - A **small potion** and a **big potion** - *hard boss*

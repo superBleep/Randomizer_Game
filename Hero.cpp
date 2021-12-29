@@ -73,45 +73,33 @@ void Hero::give_potion(std::string potion_type){
         potions[1]++;
 }
 
-int Hero::heal(int potion_type){
+int Hero::potion_choice(int potion_type){
     int HP_copy;
+    int potion_name;
+    if(potion_type == 0) potion_name = small_hp;
+    if(potion_type == 1) potion_name = big_hp;
 
+    if(potions[potion_type] == 0)
+        return -2; //not enough potions
+    else{
+        potions[potion_type]--;
+        if(HP + potion_name >= max_hp){
+            HP_copy = HP;
+            HP = max_hp;
+            return max_hp - HP_copy; //return how much of the potion is used
+        }
+        else{
+            HP += potion_name;
+            return potion_name; //return potion
+        }
+    }
+}
+
+int Hero::heal(int potion_type){
     if(HP == max_hp)
         return -1; //HP already at max
-    //small potion
-    if(potion_type == 1){
-        if(potions[0] == 0)
-            return -2; //not enough potions
-        else{
-            potions[0]--;
-            if(HP + small_hp >= max_hp){
-                HP_copy = HP;
-                HP = max_hp;
-                return max_hp - HP_copy; //return how much of the potion is used
-            }
-            else{
-                HP += small_hp;
-                return small_hp; //return potion
-            }
-        }
-    }
-    //big potion
-    if(potion_type == 2){
-        if(potions[1] == 0)
-            return -2; //not enough potions
-        else{
-            potions[1]--;
-            if(HP + big_hp >= max_hp){
-                HP_copy = HP;
-                HP = max_hp;
-                return max_hp - HP_copy;
-            }
-            else{
-                HP += big_hp;
-                return big_hp;
-            }
-        }
-    }
-
+    else
+        return potion_choice(potion_type - 1);
+    
     return 0;
 }
