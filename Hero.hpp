@@ -17,14 +17,8 @@ class Hero : public Player {
         int small_hp, big_hp;
         int max_hp;
 
-        //input function used to read basic hero data (name and type)
-        void input(std::istream &is);
-
         //function to choose potion to be given
         int potion_choice(int potion_type);
-    public:
-        //function to create a smart pointer object
-        static std::shared_ptr<Hero> create();
 
         //constructor w/ default values for exceptions
         Hero(std::string name, std::string type) : type(type) {
@@ -34,9 +28,9 @@ class Hero : public Player {
             big_hp = -1;
             max_hp = -1;
         }
-
-        //operator>> and initializer list
-        friend std::istream &operator>>(std::istream &is, Hero &h);
+    public:
+        //function to create a smart pointer object
+        static std::shared_ptr<Hero> create();
 
         //operator<<
         friend std::ostream &operator<<(std::ostream &os, const Hero &p);
@@ -90,15 +84,15 @@ class Hero : public Player {
             this->Stamina -= 10;
         }
         
-        //stat-setting function (empty, waiting to be implemented in subclass)
-        virtual void set_stats() {};
+        //stat-setting function
+        virtual void set_stats() = 0;
 
         //healing functions
         void give_potion(std::string potion_type);
         int heal(int potion_type);
 
         //function to show hero type
-        virtual void show_type() {};
+        virtual void show_type() = 0;
 };
 
 #endif

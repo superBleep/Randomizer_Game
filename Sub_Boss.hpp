@@ -6,28 +6,31 @@
 class easyBoss : public Boss {
     private:
         void set_stats() override;
-
-        void output(std::ostream &os) override;
+        void give_potion(Hero &hero) override;
     public:
-        easyBoss(std::string name);
+        easyBoss(std::string name) {
+            this->name = name;
+        };
 };
 
 class medBoss : public Boss {
     private:
         void set_stats() override;
-
-        void output(std::ostream &os) override;
+        void give_potion(Hero &hero) override;
     public:
-        medBoss(std::string name);
+        medBoss(std::string name) {
+            this->name = name;
+        };
 };
 
 class hardBoss : public Boss {
     private:
         void set_stats() override;
-
-        void output(std::ostream &os) override;
+        void give_potion(Hero &hero) override;
     public:
-        hardBoss(std::string name);
+        hardBoss(std::string name) {
+            this->name = name;
+        };
 };
 
 #endif

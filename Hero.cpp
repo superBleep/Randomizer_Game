@@ -2,12 +2,12 @@
 #include "Sub_Hero.hpp"
 
 //input function
-void Hero::input(std::istream &is){
+void input(std::string &name, std::string &type){
     std::cout <<"##### Randomizer! #####" <<std::endl;
     std::cout <<"Choose a NAME for your hero:" <<std::endl;
     std::cout <<"> ";
 
-    is >>name;
+    std::cin >>name;
 
     std::cout <<std::endl <<"Choose a TYPE for your hero:" <<std::endl;
     std::cout <<"Basic -> Base Stats: HP = 100 Stamina = 30 Defence = 50 Parry = 15" <<std::endl;
@@ -15,7 +15,7 @@ void Hero::input(std::istream &is){
     std::cout <<"Heavy -> Base Stats: HP = 200 Stamina = 10 Defence = 65 Parry = 5" <<std::endl;
     std::cout <<"> ";
 
-    is >>type;
+    std::cin >>type;
 
     //throw exception if wrong type is given
     if(type != "Basic" && type != "basic" && type != "Light" 
@@ -25,26 +25,25 @@ void Hero::input(std::istream &is){
 
 //function used to create hero object based on input
 std::shared_ptr<Hero> Hero::create() {
+    std::string name, type;
+    
     std::shared_ptr<Hero> e;
-    e = std::make_shared<Hero>("name", "type");
-    std::cin >> *e;
+    input(name, type);
 
-    if(e->type == "basic" || e->type == "Basic")
-        e = std::make_shared<basicHero>(e->name, e->type);
-    if(e->type == "light" || e->type == "Light")
-        e = std::make_shared<lightHero>(e->name, e->type);
-    if(e->type == "heavy" || e->type == "Heavy")
-        e = std::make_shared<heavyHero>(e->name, e->type);
+    if(type == "basic" || type == "Basic")
+        e = std::make_shared<basicHero>(name, type);
+    else if(type == "light" || type == "Light")
+        e = std::make_shared<lightHero>(name, type);
+    else if(type == "heavy" || type == "Heavy")
+        e = std::make_shared<heavyHero>(name, type);
 
     e->set_stats();
+
+    //throw exception if stats have been incorrectly assigned
+    if(e->HP == -1 || e->Defence == -1 || e->Parry == -1 || e->Stamina == -1 || e->name == "" || e->type == "")
+        throw StatsException();
+
     return e;
-}
-
-//operator>> and initializer list
-std::istream &operator>>(std::istream &is, Hero &h){
-    h.input(is);
-
-    return is;
 }
 
 //operator<<
@@ -75,22 +74,22 @@ void Hero::give_potion(std::string potion_type){
 
 int Hero::potion_choice(int potion_type){
     int HP_copy;
-    int potion_name;
-    if(potion_type == 0) potion_name = small_hp;
-    if(potion_type == 1) potion_name = big_hp;
+    int potion_hp;
+    if(potion_type == 0) potion_hp = small_hp;
+    if(potion_type == 1) potion_hp = big_hp;
 
     if(potions[potion_type] == 0)
         return -2; //not enough potions
     else{
         potions[potion_type]--;
-        if(HP + potion_name >= max_hp){
+        if(HP + potion_hp >= max_hp){
             HP_copy = HP;
             HP = max_hp;
             return max_hp - HP_copy; //return how much of the potion is used
         }
         else{
-            HP += potion_name;
-            return potion_name; //return potion
+            HP += potion_hp;
+            return potion_hp; //return potion
         }
     }
 }

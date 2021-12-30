@@ -2,31 +2,33 @@
 #define BOSS_HPP
 
 #include "Player.hpp"
+#include "Hero.hpp"
 
 class Boss : public Player {
     protected:
         std::string btype;
 
-        //input function used to read basic boss data (name and btype)
-        void input(std::istream &is);
-
         //function to display boss data
-        virtual void output(std::ostream &os);
+        void output(std::ostream &os);
+
+        //constructors
+        Boss() {}
+
+        Boss(std::string name){
+            this->name = name;
+        }
     public:
         //function to create a smart pointer object
         static std::shared_ptr<Boss> create();
 
-        //constructor
-        Boss(std::string name){
-            this->name = name;
-        }
+        //stat-setting functiong
+        virtual void set_stats() = 0;
 
-        //stat-setting functiong (empty, waiting to be implemented in subclass)
-        virtual void set_stats() {};
-
-        //input/output operators
-        friend std::istream &operator>>(std::istream &is, Boss &b);
+        //output operator
         friend std::ostream &operator<<(std::ostream &os, Boss &b);
+
+        //function to reward hero with potion after death
+        virtual void give_potion(Hero &hero) = 0;
 };
 
 #endif

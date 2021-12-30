@@ -8,7 +8,7 @@ class basicHero : public Hero {
         void set_stats() override;
         void show_type() override;
     public:
-        basicHero(std::string name, std::string type);
+        basicHero(std::string name, std::string type) : Hero(name, type) {}
 };
 
 class lightHero : public Hero {
@@ -16,7 +16,7 @@ class lightHero : public Hero {
         void set_stats() override;
         void show_type() override;
     public:
-        lightHero(std::string name, std::string type);
+        lightHero(std::string name, std::string type) : Hero(name, type) {}
 };
 
 class heavyHero : public Hero {
@@ -24,7 +24,7 @@ class heavyHero : public Hero {
         void set_stats() override;
         void show_type() override;
     public:
-        heavyHero(std::string name, std::string type);
+        heavyHero(std::string name, std::string type) : Hero(name, type) {};
 };
 
 #endif

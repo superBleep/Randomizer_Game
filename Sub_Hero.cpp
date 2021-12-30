@@ -1,13 +1,5 @@
 #include "Sub_Hero.hpp"
 
-basicHero::basicHero(std::string name, std::string type) : Hero(name, type) {
-    set_stats();
-    
-    //throw exception if stats haven't been assigned correctly
-    if(HP == -1 || Defence == -1 || Parry == -1 || Stamina == -1 || small_hp == -1 || big_hp == -1 || max_hp == -1 || name == "" || type == "")
-        throw StatsException();
-}
-
 void basicHero::set_stats(){
     HP = 100;
     Stamina = 30;
@@ -24,15 +16,6 @@ void basicHero::show_type(){
     <<"With a set of average stats, " <<name <<" is a basic hero!" <<std::endl;
 }
 
-lightHero::lightHero(std::string name, std::string type) : Hero(name, type) {
-    set_stats();
-    this->name = name;
-    this->type = type;
-
-    if(HP == -1 || Defence == -1 || Parry == -1 || Stamina == -1 || name == "" || type == "")
-        throw StatsException();
-}
-
 void lightHero::set_stats(){
     HP = 50;
     Stamina = 60;
@@ -47,15 +30,6 @@ void lightHero::set_stats(){
 void lightHero::show_type(){
     std::cout <<"------------------------" <<std::endl
     <<"Both fragile and agile, " <<name <<" is a light hero!" <<std::endl;
-}
-
-heavyHero::heavyHero(std::string name, std::string type) : Hero(name, type) {
-    set_stats();
-    this->name = name;
-    this->type = type;
-
-    if(HP == -1 || Defence == -1 || Parry == -1 || Stamina == -1 || name == "" || type == "")
-        throw StatsException();
 }
 
 void heavyHero::set_stats() {

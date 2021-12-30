@@ -121,14 +121,15 @@ int main(){
     //check boss for errors after creation
     try{
         boss = Boss::create();
-        hero->show_type();
     }catch(TypeException &e){
         std::cout <<"Exception caught: " <<e.what() <<std::endl;
         return 0;
-    }catch(StatsException &e){
+    }catch(std::exception &e){
         std::cout <<"Exception caught: " <<e.what() <<std::endl;
         return 0;
     }
+
+    hero->show_type();
 
     //open file for logging
     std::ofstream fout;
